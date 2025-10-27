@@ -1,0 +1,215 @@
+:root {
+  --profile-bg: #f5f5f5;
+  --card-bg: #ffffff;
+  --text: #222;
+  --muted: #666;
+  --border: #e8e8e8;
+  --primary: #111827;
+  --danger: #b00020;
+}
+
+.profile-page-admin {
+  background: var(--profile-bg);
+  min-height: 100vh;
+  background-color: #fdf8ef;
+}
+
+.profile-admin-container {
+  max-width: 960px;
+  margin: 24px auto;
+  padding: 0 16px;
+  color: #5b3b2b;
+}
+
+
+.profile-title-admin {
+  font-size: 28px;
+  font-weight: 700;
+  color: #5b3b2b;
+  margin: 8px 0 16px;
+}
+
+.profile-card-admin {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  color: black;
+}
+
+.profile-card-admin h3 {
+  color: #5b3b2b;
+}
+
+.profile-card-admin select {
+  grid-column: span 2;
+  padding: 10px 12px;
+  border: 1px solid #b3b3b3;
+  border-radius: 8px;
+  outline: none;
+  background-color: #ffffff;
+  color: #5b3b2b;
+}
+
+.profile-error-admin {
+  background: #fff7f7;
+  border: 1px solid #ffd6d6;
+  color: #8a1c1c;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+}
+
+.profile-fields-admin {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.field-admin {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-label-admin {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.field-value-admin {
+  font-size: 15px;
+  color: var(--text);
+}
+
+.section-header-admin {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.section-title-admin {
+  font-size: 18px;
+  margin: 0;
+}
+
+.iud-products-admin {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 16px;
+}
+
+.iud-products-admin label {
+  grid-column: span 2;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.iud-products-admin input,
+.iud-products-admin select,
+.iud-products-admin textarea,
+.iud-products-admin ::-webkit-file-upload-button {
+  grid-column: span 2;
+  padding: 10px 12px;
+  border: 1px solid #b3b3b3;
+  border-radius: 8px;
+  outline: none;
+  background-color: #ffffff;
+  color: #5b3b2b;
+}
+
+.btn-primary-admin {
+  margin-top: 8px;
+  grid-column: span 2;
+  background: #5b3b2b;
+  color: #fff;
+  border: 1px solid #5b3b2b;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-danger-admin {
+  margin-top: 12px;
+  background: var(--danger);
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.link-button-admin {
+  background: transparent;
+  border: none;
+  color: var(--primary);
+  font-weight: 600;
+  cursor: not-allowed;
+}
+
+.empty-box-admin {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  background: #f8f8f8;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+@media (min-width: 768px) {
+  .profile-fields-admin {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Admin Navigation */
+.profile-nav-admin {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-secondary-admin {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.btn-secondary-admin:hover {
+  background: var(--profile-bg);
+}
+
+
+
+
+
+.profile-success-admin {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.section-title-admin {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--text);
+}

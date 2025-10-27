@@ -1,0 +1,34 @@
+.navbar {
+  background-color: #f5f0e6;
+  box-sizing: border-box;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 2px 24px;            /* espacio lateral dentro del contenido */
+  min-height: 40px;   /* quitar bg interno (el fondo ya está en .header-container) */
+  border: none;               /* quitar borde interno */
+  border-radius: 0;
+  border-bottom: 1px solid rgba(209, 197, 197, 0.12);   /* línea fina más oscura */
+  box-shadow: 0 6px 18px -12px rgba(94, 87, 87, 0.4);
+}
+
+.navbar .button {
+  background: none;
+  border: none;
+  color: #5b3b2b;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.navbar .button:hover {
+  background-color: rgba(91, 59, 43, 0.1);
+  color: #5b3b2b;
+}
+
+

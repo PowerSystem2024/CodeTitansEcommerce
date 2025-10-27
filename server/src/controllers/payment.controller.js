@@ -132,103 +132,127 @@ export async function createPreference(req, res) {
 
 // Webhook - Recibir notificaciones de MercadoPago
 export async function webhook(req, res) {
+  const client = await pool.connect();
   try {
     const { type, data } = req.body;
 
     console.log("📩 Webhook recibido:", { type, data });
 
-    // MercadoPago envía diferentes tipos de notificaciones
-    if (type === "payment") {
-      const paymentId = data.id;
-
-      // Obtener información del pago
-      const paymentInfo = await payment.get({ id: paymentId });
-
-      console.log("💳 Información del pago:", paymentInfo);
-
-      const externalReference = paymentInfo.external_reference; // order_id
-      const status = paymentInfo.status; // approved, rejected, pending
-
-      if (externalReference) {
-        // Actualizar orden según el estado del pago
-        if (status === "approved") {
-          // Obtener user_id de la orden para vaciar su carrito
-          const orderResult = await pool.query(
-            `SELECT user_id FROM orders WHERE id = $1`,
-            [externalReference]
-          );
-
-          if (orderResult.rowCount === 0) {
-            console.error(`❌ Orden ${externalReference} no encontrada`);
-            return res.status(200).json({ success: true });
-          }
-
-          const userId = orderResult.rows[0].user_id;
-
-          // Obtener items de la orden para decrementar stock
-          const orderItems = await pool.query(
-            `SELECT oi.product_id, oi.quantity 
-             FROM order_items oi
-             WHERE oi.order_id = $1`,
-            [externalReference]
-          );
-
-          // Decrementar stock de cada producto
-          for (const item of orderItems.rows) {
-            await pool.query(
-              `UPDATE products 
-               SET stock = stock - $1, updated_at = NOW() 
-               WHERE id = $2`,
-              [item.quantity, item.product_id]
-            );
-          }
-
-          // Vaciar carrito del usuario
-          await pool.query(
-            `DELETE FROM cart_items WHERE user_id = $1`,
-            [userId]
-          );
-
-          // Actualizar estado de la orden
-          await pool.query(
-            `UPDATE orders 
-             SET status = 'paid', 
-                 payment_status = 'approved',
-                 updated_at = NOW() 
-             WHERE id = $1`,
-            [externalReference]
-          );
-
-          console.log(`✅ Orden ${externalReference} marcada como pagada, stock decrementado y carrito vaciado`);
-        } else if (status === "rejected") {
-          await pool.query(
-            `UPDATE orders 
-             SET payment_status = 'rejected',
-                 updated_at = NOW() 
-             WHERE id = $1`,
-            [externalReference]
-          );
-
-          console.log(`❌ Pago rechazado para orden ${externalReference}`);
-        } else if (status === "pending") {
-          await pool.query(
-            `UPDATE orders 
-             SET payment_status = 'pending',
-                 updated_at = NOW() 
-             WHERE id = $1`,
-            [externalReference]
-          );
-
-          console.log(`⏳ Pago pendiente para orden ${externalReference}`);
-        }
-      }
+    // Procesamos sólo notificaciones de payment
+    if (type !== "payment") {
+      return res.status(200).json({ success: true });
     }
 
-    // Siempre responder 200 para que MercadoPago no reintente
+    const paymentId = data?.id;
+    if (!paymentId) {
+      console.warn("Webhook de payment sin id");
+      return res.status(200).json({ success: true });
+    }
+
+    // Obtener información del pago y normalizar la respuesta
+    const paymentRaw = await payment.get({ id: paymentId });
+    const paymentInfo = paymentRaw?.body || paymentRaw;
+    console.log("💳 Información del pago (normalizada):", paymentInfo);
+
+    const externalReference = paymentInfo?.external_reference?.toString(); // order_id
+    const status = paymentInfo?.status; // approved, rejected, pending, etc.
+
+    if (!externalReference) {
+      console.warn("Pago sin external_reference:", paymentId);
+      return res.status(200).json({ success: true });
+    }
+
+    // Iniciar transacción y bloquear la fila de la orden para evitar doble procesamiento
+    await client.query("BEGIN");
+
+    const orderRes = await client.query(
+      `SELECT id, user_id, status, payment_status
+       FROM orders
+       WHERE id = $1
+       FOR UPDATE`,
+      [externalReference]
+    );
+
+    if (orderRes.rowCount === 0) {
+      console.warn(`Orden ${externalReference} no encontrada (webhook)`);
+      await client.query("COMMIT");
+      return res.status(200).json({ success: true });
+    }
+
+    const order = orderRes.rows[0];
+
+    // Idempotencia: si ya está aprobada/paid no hacemos nada
+    if (order.payment_status === "approved" || order.status === "paid") {
+      console.log(`Orden ${externalReference} ya procesada (status=${order.status}, payment_status=${order.payment_status})`);
+      await client.query("COMMIT");
+      return res.status(200).json({ success: true });
+    }
+
+    if (status === "approved") {
+      // Obtener items de la orden para decrementar stock
+      const itemsRes = await client.query(
+        `SELECT oi.product_id, oi.quantity
+         FROM order_items oi
+         WHERE oi.order_id = $1`,
+        [externalReference]
+      );
+
+      // Decrementar stock de cada producto
+      for (const it of itemsRes.rows) {
+        await client.query(
+          `UPDATE products
+           SET stock = GREATEST(stock - $1, 0), updated_at = NOW()
+           WHERE id = $2`,
+          [it.quantity, it.product_id]
+        );
+      }
+
+      // Vaciar carrito del usuario
+      await client.query(`DELETE FROM cart_items WHERE user_id = $1`, [order.user_id]);
+
+      // Actualizar orden: marcar como pagada y guardar payment_id real
+      await client.query(
+        `UPDATE orders
+         SET status = 'paid',
+             payment_status = 'approved',
+             payment_id = $1,
+             updated_at = NOW()
+         WHERE id = $2`,
+        [paymentId, externalReference]
+      );
+
+      console.log(`✅ Orden ${externalReference} marcada como pagada, stock decrementado y carrito vaciado`);
+    } else if (status === "rejected") {
+      await client.query(
+        `UPDATE orders
+         SET payment_status = 'rejected',
+             updated_at = NOW()
+         WHERE id = $1`,
+        [externalReference]
+      );
+
+      console.log(`❌ Pago rechazado para orden ${externalReference}`);
+    } else {
+      // Otros estados (pending, in_process, etc.)
+      await client.query(
+        `UPDATE orders
+         SET payment_status = $1,
+             updated_at = NOW()
+         WHERE id = $2`,
+        [status || 'pending', externalReference]
+      );
+
+      console.log(`ℹ️ Pago estado '${status}' para orden ${externalReference}`);
+    }
+
+    await client.query("COMMIT");
     return res.status(200).json({ success: true });
   } catch (error) {
+    await client.query("ROLLBACK").catch(() => {});
     console.error("Error en webhook:", error);
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error?.message || String(error) });
+  } finally {
+    client.release();
   }
 }
 

@@ -1,0 +1,166 @@
+/* === ESTILOS DEL BANNER/SLIDER === */
+
+.hero-slider {
+  width: 100%;
+  height: 450px;
+  padding: 0;
+  box-sizing: border-box;
+  padding-left: 200px;
+  padding-right: 200px;
+  padding-top: 60px;
+}
+
+.slider-images {
+  position: relative;
+  width: 100%;
+  height: 350px; /* cambiar tamaño de la imagen */
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.slider-images img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.slider-images img[src$=".svg"] {
+  object-fit: contain;
+  object-position: center;
+  width: 100%;
+  height: 100%;
+}
+
+.slider-images img.active {
+  opacity: 1;
+  z-index: 2;
+  pointer-events: auto;
+}
+
+.slider-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 10;
+}
+
+.slider-dots .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #d2c5b7;
+  opacity: 0.7;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.slider-dots .dot.active {
+  background: #5b3b2b;
+  opacity: 1;
+}
+
+.slider-images .prev {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: white;
+  border: none;
+  font-size: 18px;
+  padding: 4px 6px;
+  cursor: pointer;
+  border-radius: 3px;
+  z-index: 10;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.slider-images .next {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  color: white;
+  border: none;
+  font-size: 18px;
+  padding: 4px 6px;
+  cursor: pointer;
+  border-radius: 3px;
+  z-index: 10;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+.slider-images .prev:hover,
+.slider-images .next:hover {
+  opacity: 1;
+}
+
+/* pequeño ajuste: asegurar que las imágenes no reciban clicks desde botones */
+.slider-images img {
+  pointer-events: none;
+}
+
+.slider-images .prev,
+.slider-images .next {
+  pointer-events: auto;
+}
+
+
+/* === RESPONSIVE PARA EL BANNER === */
+@media (max-width: 983px) {
+  .hero-slider {
+    height: 400px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+  }
+
+  .slider-images {
+    height: 400px;
+  }
+
+  .slider-images .prev,
+  .slider-images .next {
+    font-size: 14px;
+    padding: 12px 16px;
+  }
+
+  .slider-dots {
+    bottom: 10px;
+    gap: 8px;
+  }
+
+  .slider-dots .dot {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-slider {
+    height: 300px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .slider-images {
+    height: 300px;
+  }
+
+  .slider-images .prev,
+  .slider-images .next {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+}
