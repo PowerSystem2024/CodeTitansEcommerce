@@ -237,6 +237,7 @@ export async function getOrderById(req, res) {
       `SELECT 
         o.id,
         o.user_id,
+        u.email as user_email,                  -- <-- agregado
         o.total,
         o.status,
         o.payment_status,
@@ -263,10 +264,11 @@ export async function getOrderById(req, res) {
           )
         ) as items
        FROM orders o
+       INNER JOIN users u ON o.user_id = u.id         -- <-- agregado join
        INNER JOIN order_items oi ON o.id = oi.order_id
        INNER JOIN products p ON oi.product_id = p.id
        WHERE o.id = $1 AND o.user_id = $2
-       GROUP BY o.id`,
+       GROUP BY o.id, u.email` ,                      
       [id, userId]
     );
 

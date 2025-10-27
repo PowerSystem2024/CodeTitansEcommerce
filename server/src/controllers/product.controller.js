@@ -288,44 +288,97 @@ export async function toggleProductStatus(req, res) {
 // Eliminar producto
 export async function deleteProduct(req, res) {
   const { id } = req.params;
+  const client = await pool.connect();
 
   try {
-    // Obtener imagen antes de eliminar
-    const product = await pool.query(
+    await client.query("BEGIN");
+
+    // 1) comprobar referencias en order_items
+    const refQ = await client.query(
+      "SELECT COUNT(*)::int AS cnt FROM order_items WHERE product_id = $1",
+      [id]
+    );
+    const refs = Number(refQ.rows[0]?.cnt || 0);
+
+    if (refs > 0) {
+      // Producto en órdenes => soft-delete (no borrar para preservar historial)
+      const upd = await client.query(
+        `UPDATE products
+         SET is_active = FALSE,
+             updated_at = NOW()
+         WHERE id = $1
+         RETURNING id, name, is_active`,
+        [id]
+      );
+
+      await client.query("COMMIT");
+      return res.status(200).json({
+        success: true,
+        softDeleted: true,
+        message:
+          "Producto referenciado por órdenes. Se desactivó en lugar de eliminar para preservar historial.",
+        product: upd.rows[0],
+      });
+    }
+
+    // 2) No hay referencias: preparar eliminación física
+    const productRes = await client.query(
       "SELECT image_url FROM products WHERE id = $1",
       [id]
     );
-
-    if (product.rowCount === 0) {
-      return res.status(404).json({ message: "Producto no encontrado" });
+    if (productRes.rowCount === 0) {
+      await client.query("ROLLBACK");
+      return res.status(404).json({ success: false, message: "Producto no encontrado" });
     }
 
-    // Eliminar producto de la BD
-    const result = await pool.query(
+    // Borrar registros relacionados solo si las tablas existen
+    const t1 = (await client.query("SELECT to_regclass('public.product_images') AS r")).rows[0].r;
+    if (t1) {
+      await client.query("DELETE FROM product_images WHERE product_id = $1", [id]);
+    }
+    const t2 = (await client.query("SELECT to_regclass('public.product_categories') AS r")).rows[0].r;
+    if (t2) {
+      await client.query("DELETE FROM product_categories WHERE product_id = $1", [id]);
+    }
+
+    // Eliminar producto
+    const del = await client.query(
       "DELETE FROM products WHERE id = $1 RETURNING id, name",
       [id]
     );
 
-    // Eliminar imagen del servidor si existe
-    if (product.rows[0].image_url) {
-      const imageRel = product.rows[0].image_url.replace(/^\/+/, ""); // quitar slash inicial
+    // Commit antes de operaciones fuera de BD
+    await client.query("COMMIT");
+
+    // Eliminar imagen del servidor si existe (fuera de la transacción DB)
+    const imageUrl = productRes.rows[0].image_url;
+    if (imageUrl) {
+      const imageRel = imageUrl.replace(/^\/+/, "");
       const imagePath = path.join(process.cwd(), imageRel);
       try {
-        if (fs.existsSync(imagePath)) {
-          fs.unlinkSync(imagePath);
-        }
+        if (fs.existsSync(imagePath)) fs.unlinkSync(imagePath);
       } catch (e) {
-        console.warn('No se pudo eliminar imagen del servidor:', imagePath, e.message);
+        console.warn("No se pudo eliminar imagen del servidor:", imagePath, e.message);
       }
     }
 
     return res.status(200).json({
       success: true,
-      message: "Producto eliminado exitosamente",
-      product: result.rows[0],
+      message: "Producto eliminado correctamente",
+      product: del.rows[0],
     });
   } catch (error) {
+    // rollback seguro
+    try { await client.query("ROLLBACK"); } catch (rbErr) { console.error("Rollback error:", rbErr); }
     console.error("Error en deleteProduct:", error);
+
+    if (error?.code === "23503") {
+      // FK violation
+      return res.status(409).json({ success: false, message: "No se puede eliminar el producto: hay datos relacionados." });
+    }
+
     return res.status(500).json({ message: "Error al eliminar producto" });
+  } finally {
+    client.release();
   }
 }
