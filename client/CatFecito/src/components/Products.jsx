@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 import axios from 'axios';
 import "../styles/CustomBar.css";
 import "../styles/index.css";
@@ -87,10 +88,26 @@ export const Products = ({
       .trim()
   , []);
 
-  const applyFilters = (products) => {
-    if (!filters || Object.keys(filters).length === 0) return products;
+  // Leer query param "search" y aplicarlo junto con los filtros existentes
+  const location = useLocation();
+  const urlParams = new URLSearchParams(location.search);
+  const searchParam = (urlParams.get('search') || '').trim();
 
-    return products.filter((p) => {
+  const applyFilters = (products) => {
+    let result = products;
+
+    // Aplicar búsqueda de la barra (si existe)
+    if (searchParam) {
+      const q = normalize(searchParam);
+      result = result.filter((p) =>
+        normalize(p.name).includes(q) || normalize(p.type || '').includes(q)
+      );
+    }
+
+    // Si no hay filtros adicionales, devolvemos el resultado ya filtrado por searchParam
+    if (!filters || Object.keys(filters).length === 0) return result;
+
+    return result.filter((p) => {
       // Disponibilidad
       if (filters.availability) {
         const { in_stock, out_of_stock } = filters.availability;
@@ -99,10 +116,8 @@ export const Products = ({
         } else if (!in_stock && out_of_stock) {
           if (!(p.stock === 0)) return false;
         } else if (!in_stock && !out_of_stock) {
-          // Si ambos están desmarcados, no mostrar ninguno
           return true;
         }
-        // Si ambos true, no filtramos por disponibilidad
       }
 
       // Precio
@@ -122,8 +137,6 @@ export const Products = ({
         });
         if (!matchesType) return false;
       }
-
-      // (Sin filtro de origen)
 
       return true;
     });
