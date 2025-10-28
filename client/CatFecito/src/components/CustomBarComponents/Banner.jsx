@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './Banner.css';
-import img112 from '../../assets/img/112.png';
+import img112 from '../../assets/img/gato-portada.png';
 import catImg from '../../assets/img/cat.png';
 import groupImg from '../../assets/img/Group.svg';
+import group from "../../assets/img/Group.svg";
 
 export const Banner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);

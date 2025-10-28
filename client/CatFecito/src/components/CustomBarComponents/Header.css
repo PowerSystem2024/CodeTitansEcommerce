@@ -58,8 +58,10 @@
   background-color: #ffffff;
   border-radius: 30px;
   border: 1px solid #0000001a;
-  padding-left: 10px;
+  padding-left: 18px;
   box-shadow: 0 6px 18px -12px rgba(190, 181, 181, 0.4);
+  color: black;
+  font-size: 16px;
 }
 
 /* Simple, subtle Shop button placed next to logo */
@@ -198,8 +200,8 @@
 
 /* mini-imagen del producto */
 .search-result-item img {
-  width: 48px;
-  height: 48px;
+  width: 60px;
+  height: 60px;
   object-fit: cover;
   border-radius: 6px;
   flex: 0 0 48px;
@@ -209,7 +211,7 @@
 .sr-info {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 6px;
   overflow: hidden;
 }
 
@@ -232,4 +234,39 @@
   color: #777;
   font-size: 13px;
   text-align: center;
+}
+
+/* ocultar la X nativa en WebKit/Chromium */
+.search-rec::-webkit-search-cancel-button,
+.search-rec::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
+/* ocultar la X nativa en Edge/IE */
+.search-rec::-ms-clear,
+.search-rec::-ms-reveal {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.clear-search {
+  position: absolute;
+  right: 45px; /* ajustar según ancho del icono lupa */
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
 }

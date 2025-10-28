@@ -2,18 +2,18 @@
 
 .hero-slider {
   width: 100%;
-  height: 450px;
+  height: 760px;
   padding: 0;
   box-sizing: border-box;
-  padding-left: 200px;
-  padding-right: 200px;
-  padding-top: 60px;
+  padding-left: 300px;
+  padding-right: 300px;
+  padding-top: 50px;
 }
 
 .slider-images {
   position: relative;
   width: 100%;
-  height: 350px; /* cambiar tamaño de la imagen */
+  height: 700px; /* cambiar tamaño de la imagen */
   overflow: hidden;
   border-radius: 16px;
 }
@@ -24,9 +24,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover;        /* <-- mostrar la imagen completa */
+  object-position: center;    /* <-- centrar la imagen */
   opacity: 0;
-  transition: opacity 0.5s;
+  transition: opacity 0.5s, transform 0.35s;
   z-index: 1;
   pointer-events: none;
 }
@@ -42,6 +43,7 @@
   opacity: 1;
   z-index: 2;
   pointer-events: auto;
+  transform: none; /* evitar escalados inesperados */
 }
 
 .slider-dots {

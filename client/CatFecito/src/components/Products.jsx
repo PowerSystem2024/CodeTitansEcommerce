@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import "../styles/CustomBar.css";
 import "../styles/index.css";
@@ -92,6 +92,14 @@ export const Products = ({
   const location = useLocation();
   const urlParams = new URLSearchParams(location.search);
   const searchParam = (urlParams.get('search') || '').trim();
+  const navigate = useNavigate();
+
+  const handleClearSearch = () => {
+    const params = new URLSearchParams(location.search);
+    params.delete('search');
+    const search = params.toString() ? `?${params.toString()}` : '';
+    navigate({ pathname: location.pathname, search });
+  };
 
   const applyFilters = (products) => {
     let result = products;
@@ -261,7 +269,7 @@ export const Products = ({
           {!loading && !error && dataSource.length === 0 && (
             <div style={{ marginBottom: 12, color: '#6b4a3e' }}>No hay productos disponibles.</div>
           )}
-          <SortBar onSortChange={handleSortChange} />
+          <SortBar onSortChange={handleSortChange} searchQuery={searchParam} onClearSearch={handleClearSearch} />
           <ProductsList 
             products={visibleProducts} 
             onAddToCart={onAddToCart}

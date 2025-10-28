@@ -168,6 +168,16 @@ export const Header = ({
           onChange={(e) => setSearchQuery(e.target.value)}
         />
         <button
+          type="button"
+          className="clear-search"
+          onClick={() => setSearchQuery('')}
+          aria-label="Limpiar búsqueda"
+          style={{ display: searchQuery ? 'flex' : 'none' }}
+        >
+          ×
+        </button>
+
+        <button
           className="search-icon"
           onClick={() => {
             const q = (searchQuery || '').trim();
