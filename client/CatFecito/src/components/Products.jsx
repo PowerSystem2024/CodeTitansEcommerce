@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import "../styles/CustomBar.css";
 import "../styles/index.css";
@@ -87,10 +88,34 @@ export const Products = ({
       .trim()
   , []);
 
-  const applyFilters = (products) => {
-    if (!filters || Object.keys(filters).length === 0) return products;
+  // Leer query param "search" y aplicarlo junto con los filtros existentes
+  const location = useLocation();
+  const urlParams = new URLSearchParams(location.search);
+  const searchParam = (urlParams.get('search') || '').trim();
+  const navigate = useNavigate();
 
-    return products.filter((p) => {
+  const handleClearSearch = () => {
+    const params = new URLSearchParams(location.search);
+    params.delete('search');
+    const search = params.toString() ? `?${params.toString()}` : '';
+    navigate({ pathname: location.pathname, search });
+  };
+
+  const applyFilters = (products) => {
+    let result = products;
+
+    // Aplicar búsqueda de la barra (si existe)
+    if (searchParam) {
+      const q = normalize(searchParam);
+      result = result.filter((p) =>
+        normalize(p.name).includes(q) || normalize(p.type || '').includes(q)
+      );
+    }
+
+    // Si no hay filtros adicionales, devolvemos el resultado ya filtrado por searchParam
+    if (!filters || Object.keys(filters).length === 0) return result;
+
+    return result.filter((p) => {
       // Disponibilidad
       if (filters.availability) {
         const { in_stock, out_of_stock } = filters.availability;
@@ -99,10 +124,8 @@ export const Products = ({
         } else if (!in_stock && out_of_stock) {
           if (!(p.stock === 0)) return false;
         } else if (!in_stock && !out_of_stock) {
-          // Si ambos están desmarcados, no mostrar ninguno
           return true;
         }
-        // Si ambos true, no filtramos por disponibilidad
       }
 
       // Precio
@@ -122,8 +145,6 @@ export const Products = ({
         });
         if (!matchesType) return false;
       }
-
-      // (Sin filtro de origen)
 
       return true;
     });
@@ -248,7 +269,7 @@ export const Products = ({
           {!loading && !error && dataSource.length === 0 && (
             <div style={{ marginBottom: 12, color: '#6b4a3e' }}>No hay productos disponibles.</div>
           )}
-          <SortBar onSortChange={handleSortChange} />
+          <SortBar onSortChange={handleSortChange} searchQuery={searchParam} onClearSearch={handleClearSearch} />
           <ProductsList 
             products={visibleProducts} 
             onAddToCart={onAddToCart}

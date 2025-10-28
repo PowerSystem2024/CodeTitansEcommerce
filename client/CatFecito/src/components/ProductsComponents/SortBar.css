@@ -89,3 +89,61 @@
     font-size: 16px; /* Evita zoom en iOS */
   }
 }
+
+/* Layout row: tag a la izquierda, sort a la derecha */
+.sortbar-row {
+  display: flex;
+  align-items: center;
+  gap: 600px;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+/* Tag de búsqueda */
+.search-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+  color: #3b2b20;
+  font-size: 14px;
+  flex: 0 0 auto;
+}
+
+.search-tag-label {
+  color: #7a5b49;
+  margin-right: 6px;
+  font-weight: 600;
+}
+
+.search-tag-value {
+  color: #2b2b2b;
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Botón para quitar el filtro */
+.search-tag-clear {
+  margin-left: 8px;
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  color: #7a5b49;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+.search-tag-clear:hover {
+  background: rgba(0,0,0,0.04);
+}
+
+/* placeholder para mantener spacing cuando no hay búsqueda */
+.search-tag-placeholder {
+  flex: 0 0 320px; /* ajusta ancho igual al tag para alinear */
+}

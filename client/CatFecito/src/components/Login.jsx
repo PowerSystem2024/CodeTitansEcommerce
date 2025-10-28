@@ -21,7 +21,8 @@ export const Login = ({ onSwitch, onSuccess }) => {
       // Espera { user, token, ... }
       if (data?.token) {
         sessionStorage.setItem('authToken', data.token);
-        if (data.user) sessionStorage.setItem('authUser', JSON.stringify(data.user));
+        sessionStorage.setItem('authUser', JSON.stringify(data.user));
+        window.dispatchEvent(new Event('authChanged'));
         axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
         // Llamar onSuccess si fue pasado (permite cerrar modal sin navegar)
         if (typeof onSuccess === 'function') return onSuccess(data);
