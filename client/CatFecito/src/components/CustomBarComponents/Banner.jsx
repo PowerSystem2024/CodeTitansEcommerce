@@ -1,86 +1,96 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './Banner.css';
-import img112 from '../../assets/img/gato-portada.png';
-import catImg from '../../assets/img/cat.png';
-import groupImg from '../../assets/img/Group.svg';
-import group from "../../assets/img/Group.svg";
+
+// --- Importa tus imágenes y logo aquí ---
+// Asegúrate de que las rutas sean correctas
+import bannerBackground from '../../assets/img/gato-portada.png'; // La imagen principal con el café
+import catImg from '../../assets/img/cat.png'; // Segunda imagen para el slider
+import logoSvg from '../../assets/img/Group.svg'; // El logo en formato SVG
 
 export const Banner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   
-  // Array de imágenes del slider
-  const images = [
-    { src: img112, alt: "Banner 1" },
-    { src: catImg, alt: "Banner 2" },
-    { src: groupImg, alt: "Banner 3" }
+  // Array de objetos para definir cada slide
+  const slides = [
+    { 
+      src: bannerBackground, 
+      alt: "Banner principal con café y arte de gato",
+      // Contenido que se superpondrá a la imagen
+      content: {
+        logo: logoSvg,
+        text: "Descubre el sabor único de nuestro café artesanal, preparado con los granos más selectos para tu paladar.",
+        buttonText: "COMPRAR"
+      }
+    },
+    { 
+      src: catImg, 
+      alt: "Banner secundario" 
+    },
+    // Puedes agregar más slides si lo necesitas
+    // { src: otraImagen, alt: "Tercer banner" }
   ];
 
-  const totalSlides = images.length;
+  const totalSlides = slides.length;
 
-  // Función para cambiar slide
   const showSlide = (index) => {
-    console.log('Mostrando slide:', index);
     const normalizedIndex = ((index % totalSlides) + totalSlides) % totalSlides;
     setCurrentSlide(normalizedIndex);
   };
 
-  // Función para ir al siguiente slide
   const nextSlide = (e) => {
     e?.stopPropagation();
-    console.log('Click en next');
     showSlide(currentSlide + 1);
   };
 
-  // Función para ir al slide anterior
   const prevSlide = (e) => {
     e?.stopPropagation();
-    console.log('Click en prev');
     showSlide(currentSlide - 1);
   };
 
-  // Función para ir a un slide específico
   const goToSlide = (index) => {
-    console.log('Click en dot:', index);
     showSlide(index);
   };
-
-  // Auto-play opcional (descomenta si quieres que cambie automáticamente)
+  
+  // Descomenta este bloque si quieres que el slider cambie automáticamente
   /*
   useEffect(() => {
-    const interval = setInterval(() => {
-      nextSlide();
-    }, 5000); // Cambia cada 5 segundos
-
+    const interval = setInterval(nextSlide, 5000);
     return () => clearInterval(interval);
   }, [currentSlide]);
   */
 
-  useEffect(() => {
-    console.log('Banner inicializado correctamente');
-  }, []);
-
   return (
     <div className="hero-slider">
       <div className="slider-images">
-        {images.map((image, index) => (
+        {/* Mapeo de las imágenes de fondo del slider */}
+        {slides.map((slide, index) => (
           <img
             key={index}
-            src={image.src}
-            alt={image.alt}
+            src={slide.src}
+            alt={slide.alt}
             className={index === currentSlide ? 'active' : ''}
           />
         ))}
         
+        {/* Renderiza el contenido superpuesto solo si el slide activo lo tiene */}
+        {slides[currentSlide].content && (
+          <div className="slide-content">
+            <img src={slides[currentSlide].content.logo} alt="Logo Catfecito" className="logo" />
+            <p className="text">{slides[currentSlide].content.text}</p>
+            <button className="buy-button">{slides[currentSlide].content.buttonText}</button>
+          </div>
+        )}
+        
+        {/* Controles del Slider */}
         <button className="prev" onClick={prevSlide}>
           &#10094;
         </button>
-        
         <button className="next" onClick={nextSlide}>
           &#10095;
         </button>
         
         <div className="slider-dots">
-          {images.map((_, index) => (
+          {slides.map((_, index) => (
             <span
               key={index}
               className={`dot ${index === currentSlide ? 'active' : ''}`}

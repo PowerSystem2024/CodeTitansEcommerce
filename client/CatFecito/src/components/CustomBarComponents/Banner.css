@@ -1,19 +1,16 @@
-/* === ESTILOS DEL BANNER/SLIDER === */
+/* === ESTILOS DEL BANNER/SLIDER (Originales y nuevos) === */
 
 .hero-slider {
   width: 100%;
   height: 760px;
-  padding: 0;
+  padding: 50px 300px;
   box-sizing: border-box;
-  padding-left: 300px;
-  padding-right: 300px;
-  padding-top: 50px;
 }
 
 .slider-images {
   position: relative;
   width: 100%;
-  height: 700px; /* cambiar tamaño de la imagen */
+  height: 100%;
   overflow: hidden;
   border-radius: 16px;
 }
@@ -24,27 +21,74 @@
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;        /* <-- mostrar la imagen completa */
-  object-position: center;    /* <-- centrar la imagen */
-  opacity: 0;
-  transition: opacity 0.5s, transform 0.35s;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.slider-images img[src$=".svg"] {
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
-  width: 100%;
-  height: 100%;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  z-index: 1;
 }
 
 .slider-images img.active {
   opacity: 1;
   z-index: 2;
-  pointer-events: auto;
-  transform: none; /* evitar escalados inesperados */
 }
+
+/* === ESTILOS PARA EL CONTENIDO SUPERPUESTO (NUEVO) === */
+
+.slide-content {
+  position: absolute;
+  top: 50%;
+  left: 12%; /* Posición desde la izquierda */
+  transform: translateY(-50%);
+  z-index: 5; /* Asegura que esté por encima de la imagen */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alinea los elementos a la izquierda */
+  gap: 25px; /* Espacio entre logo, texto y botón */
+  max-width: 450px;
+  color: #fff;
+  padding: 20px;
+  
+}
+
+
+.slide-content .logo {
+  width: 280px;
+  height: auto;
+  margin-bottom: 15px;
+  fill: #FFFFFF; /* <-- AÑADE ESTA LÍNEA para forzar el color de relleno */
+}
+
+.slide-content .text {
+  font-family: Arial, sans-serif;
+  font-size: 1.3rem;
+  line-height: 1.6;
+  color: #E0E0E0; /* Un color de texto claro para buen contraste */
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6); /* Sombra para legibilidad */
+}
+
+.slide-content .buy-button {
+  font-family: Arial, sans-serif;
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 14px 35px;
+  cursor: pointer;
+  border: 2px solid #FFFFFF; /* Borde del botón */
+  background-color: transparent;
+  color: #FFFFFF;
+  transition: background-color 0.3s, color 0.3s;
+  letter-spacing: 1.5px;
+  margin-top: 15px; /* Espacio extra arriba del botón */
+}
+
+.slide-content .buy-button:hover {
+  background-color: #FFFFFF;
+  color: #5b3b2b; /* Color oscuro para el texto al pasar el ratón */
+}
+
+
+/* === Controles del Slider (Originales) === */
 
 .slider-dots {
   position: absolute;
@@ -71,98 +115,74 @@
   opacity: 1;
 }
 
-.slider-images .prev {
-  position: absolute;
-  top: 50%;
-  left: 12px;
-  transform: translateY(-50%);
-  color: white;
-  border: none;
-  font-size: 18px;
-  padding: 4px 6px;
-  cursor: pointer;
-  border-radius: 3px;
-  z-index: 10;
-  opacity: 0.7;
-  transition: opacity 0.3s;
-}
-
+.slider-images .prev,
 .slider-images .next {
   position: absolute;
   top: 50%;
-  right: 12px;
   transform: translateY(-50%);
   color: white;
+  background-color: rgba(0, 0, 0, 0.3);
   border: none;
   font-size: 18px;
-  padding: 4px 6px;
+  padding: 12px;
   cursor: pointer;
-  border-radius: 3px;
+  border-radius: 50%;
   z-index: 10;
   opacity: 0.7;
-  transition: opacity 0.3s;
+  transition: opacity 0.3s, background-color 0.3s;
 }
+
+.slider-images .prev { left: 20px; }
+.slider-images .next { right: 20px; }
 
 .slider-images .prev:hover,
 .slider-images .next:hover {
   opacity: 1;
-}
-
-/* pequeño ajuste: asegurar que las imágenes no reciban clicks desde botones */
-.slider-images img {
-  pointer-events: none;
-}
-
-.slider-images .prev,
-.slider-images .next {
-  pointer-events: auto;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 
 /* === RESPONSIVE PARA EL BANNER === */
+
+@media (max-width: 1400px) {
+  .hero-slider {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+}
+
 @media (max-width: 983px) {
   .hero-slider {
-    height: 400px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 10px;
+    height: 500px;
+    padding: 20px;
   }
-
-  .slider-images {
-    height: 400px;
+  .slide-content {
+    left: 5%;
+    max-width: 80%;
+    gap: 15px;
   }
-
-  .slider-images .prev,
-  .slider-images .next {
-    font-size: 14px;
-    padding: 12px 16px;
+  .slide-content .logo {
+    width: 200px;
   }
-
-  .slider-dots {
-    bottom: 10px;
-    gap: 8px;
-  }
-
-  .slider-dots .dot {
-    width: 10px;
-    height: 10px;
+  .slide-content .text {
+    font-size: 1.1rem;
   }
 }
 
 @media (max-width: 768px) {
   .hero-slider {
-    height: 300px;
-    padding-left: 10px;
-    padding-right: 10px;
+    height: 400px;
+    padding: 10px;
   }
-
-  .slider-images {
-    height: 300px;
+  .slide-content {
+    /* Centramos el contenido en pantallas pequeñas */
+    align-items: center;
+    text-align: center;
+    left: 50%;
+    width: 90%;
+    transform: translate(-50%, -50%);
   }
-
-  .slider-images .prev,
-  .slider-images .next {
-    font-size: 12px;
-    padding: 8px 12px;
+  .slide-content .logo {
+    width: 180px;
   }
 }

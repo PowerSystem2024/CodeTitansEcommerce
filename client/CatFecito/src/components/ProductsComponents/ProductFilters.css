@@ -64,7 +64,7 @@
 
 .filter-option {
   display: flex;
-  align-items: center;
+  align-items: center; /* Centra verticalmente el checkbox y el texto */
   gap: 8px;
   font-size: 12px;
   color: #2e1e18;
@@ -73,9 +73,35 @@
 }
 
 .filter-option input[type="checkbox"] {
-  width: 14px;
-  height: 14px;
-  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #fffefd;
+  margin: 0;
+  font: inherit;
+  color: #6b4a3e;
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid currentColor;
+  border-radius: 0.15em;
+  /* Se elimina el transform que causaba la distorsión */
+  display: grid;
+  place-content: center;
+  flex-shrink: 0; /* Evita que el checkbox se encoja */
+}
+
+.filter-option input[type="checkbox"]::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em #2e1e18;
+  transform-origin: bottom left;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+.filter-option input[type="checkbox"]:checked::before {
+  transform: scale(1);
 }
 
 .filter-option.muted { 
@@ -86,6 +112,11 @@
   display: flex;
   gap: 12px;
   margin-bottom: 12px;
+}
+
+.filter-body.two-column {
+
+  gap: 6px 5px;
 }
 
 .price-filter input[type="number"] {
