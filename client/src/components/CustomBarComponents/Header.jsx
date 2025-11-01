@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import "./Header.css";
 import group from "../../assets/img/Group.svg";
 import searchIcon from "../../assets/img/lupa.png";
@@ -46,6 +46,8 @@ export const Header = ({
   };
 
   const navigate = useNavigate();
+  const inputRef = useRef(null);
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
   const API_BASE =
     (import.meta.env.VITE_BACKEND_URL
@@ -155,18 +157,29 @@ export const Header = ({
 
   return (
     <div className="header">
-      <div className="logo-container" onClick={handleNavigateToHome}>
+      <div className={`logo-container`} onClick={handleNavigateToHome}>
         <img src={group} alt="Catfecito logo" />
       </div>
-
-      <div className="searcher">
+      <div className={`searcher ${mobileSearchOpen ? 'visible' : ''}`}>
         <input
+          ref={inputRef}
           className="search-rec"
           type="search"
           placeholder="¿Qué café estás buscando?"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
+        {/* Mobile hint: visible only on small screens when input is empty. Click focuses input. */}
+        <span
+          className={`mobile-search-hint ${searchQuery ? 'hidden' : ''}`}
+          role="button"
+          tabIndex={0}
+          onClick={() => {
+            if (inputRef.current) inputRef.current.focus();
+          }}
+          onKeyDown={(e) => { if (e.key === 'Enter') { if (inputRef.current) inputRef.current.focus(); } }}
+        >
+        </span>
         <button
           type="button"
           className="clear-search"
@@ -222,6 +235,21 @@ export const Header = ({
       </div>
       
       <div className="user-icons">
+        {/* Mobile: search toggle shown beside other icons */}
+        <button
+          type="button"
+          className="mobile-search-toggle"
+          aria-label="Buscar"
+          aria-expanded={mobileSearchOpen}
+          onClick={() => {
+            const next = !mobileSearchOpen;
+            setMobileSearchOpen(next);
+            // focus input when opening
+            if (next && inputRef.current) setTimeout(() => inputRef.current.focus(), 50);
+          }}
+        >
+          <img src={searchIcon} alt="Buscar" />
+        </button>
         <button
           type="button"
           className="profile-button"

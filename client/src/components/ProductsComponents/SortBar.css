@@ -147,3 +147,17 @@
 .search-tag-placeholder {
   flex: 0 0 320px; /* ajusta ancho igual al tag para alinear */
 }
+
+/* Responsive scaffold: media-query templates for this component */
+@media (max-width: 576px) {
+}
+@media (min-width: 577px) and (max-width: 767px) {
+}
+@media (min-width: 768px) and (max-width: 991px) {
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+}
+@media (min-width: 1200px) and (max-width: 1399px) {
+}
+@media (min-width: 1400px) {
+}

@@ -21,7 +21,12 @@ body {
     margin: 0px;
     height: 100%;
 }
-a blue color as a generic focus style
+/* import global breakpoints/utilities */
+@import './breakpoints.css';
+/* import components responsive scaffold (media-query templates) */
+@import './components-scaffold.css';
+
+/* a blue color as a generic focus style */
 button:focus-visible {
     outline: 2px solid #4a90e2 !important;
     outline: -webkit-focus-ring-color auto 5px !important;
