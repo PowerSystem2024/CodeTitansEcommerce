@@ -1,61 +1,15 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Catfecito</title>
-  <link rel="stylesheet" href="globals.css"/>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
-  
-  <div class="header">
-    <div class="logo-container"> <img src="img/Group.svg" alt="Catfecito logo"/></div>
-    <div class="searcher">
-      <input class="search-rec" type="search" placeholder="¿Que café estas buscando?" />
-      <button class="search-icon">
-        <img src="img/search-icon.svg" alt="Buscar"/>
-      </button>
-    </div>
-    <div class="user-icons">
-      <button class="profile-button">
-        <img class="user" src="img/user.svg" alt="Usuario"/>
-      </button>
-      <button class="cart-button">
-        <img class="cart" src="img/cart.svg" alt="Carrito"/>
-      </button>
-    </div>
-  </div>
-  
-  <nav class="navbar">
-     <ul>
-        <li><a href="#">Café de grano</a></li>
-        <li><a href="#">Cápsulas</a></li>
-        <li><a href="#">Cafeteras y accesorios</a></li>
-        <li><a href="#">Ofertas</a></li>
-        <li><a href="#">Contacto</a></li>
-     </ul>
-  </nav>
-  <div class="hero-slider">
-    <div class="slider-images">
-      <img src="img/112.png" alt="Banner 1" class="active">
-      <img src="cart.png" alt="Banner 2">
-      <img src="" alt="Banner 3">
-      <button class="prev">&#10094;</button>
-      <button class="next">&#10095;</button>
-      <div class="slider-dots">
-        <span class="dot active"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <!-- Un dot por cada imagen -->
-      </div>
-    </div>
-    
-  </div>
-<script src="script.js"></script>
-</body>
-
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./src/Catfecito.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CatFecito</title>
+    <!-- MercadoPago SDK -->
+    <script src="https://sdk.mercadopago.com/js/v2"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
