@@ -17,7 +17,7 @@ export const Login = ({ onSwitch, onSuccess }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-  const { data } = await axios.post(`${API_BASE}/auth/login`, { email, password });
+      const { data } = await axios.post(`${API_BASE}/auth/login`, { email, password });
       // Espera { user, token, ... }
       if (data?.token) {
         sessionStorage.setItem('authToken', data.token);
