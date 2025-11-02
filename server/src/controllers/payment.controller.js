@@ -221,6 +221,35 @@ export async function webhook(req, res) {
         [paymentId, externalReference]
       );
 
+      try {
+            const N8N_URL = process.env.N8N_WEBHOOK_LOCAL || process.env.N8N_WEBHOOK_URL;
+            if (N8N_URL) {
+              
+              // Enviar notificación a n8n (fire-and-forget)
+              fetch(N8N_URL, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  "X-Service-Secret": process.env.N8N_WEBHOOK_SECRET || ""
+                },
+                body: JSON.stringify({ order_id: externalReference })
+              })
+              // Agregamos un .catch() a la promesa del fetch
+              .catch(notifyErr => {
+                console.warn("Fallo en fetch (fire-and-forget) a n8n:", notifyErr?.message);
+              });
+
+            }
+          } catch (notifyErr) {
+            // Este try/catch ahora solo captura errores síncronos (si N8N_URL es inválido, etc.)
+            console.warn("Error síncrono al preparar notificación n8n:", notifyErr?.message);
+          }
+
+          // La transacción continúa y hace COMMIT inmediatamente
+          console.log(`✅ Orden ${externalReference} marcada como pagada, stock decrementado y carrito vaciado`);
+
+        } else if (status === "rejected") {
+
       console.log(`✅ Orden ${externalReference} marcada como pagada, stock decrementado y carrito vaciado`);
     } else if (status === "rejected") {
       await client.query(
