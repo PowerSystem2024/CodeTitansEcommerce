@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
 import { UserHeader } from './UserHeader';
 import './AdminProfile.css';
-import AdminNav from './AdminNav';
+import AdminNav from './adminComponents/AdminNav';
 
 const API_BASE =
 	(import.meta.env.VITE_BACKEND_URL

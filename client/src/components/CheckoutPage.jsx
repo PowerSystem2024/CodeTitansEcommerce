@@ -1,8 +1,8 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { UserHeader } from './UserHeader';
-import { CheckoutButton } from './CheckoutButton';
-import './CheckoutPage.css';
+import { CheckoutButton } from './checkoutPageComponent/CheckoutButton';
+import './checkoutPageComponent/CheckoutButton.css';
 
 export const CheckoutPage = ({
   cartItems = [],

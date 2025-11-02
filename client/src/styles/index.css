@@ -1,3 +1,9 @@
+/* import global breakpoints/utilities */
+@import './breakpoints.css';
+/* import components responsive scaffold (media-query templates) */
+@import './components-scaffold.css';
+
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -21,10 +27,6 @@ body {
     margin: 0px;
     height: 100%;
 }
-/* import global breakpoints/utilities */
-@import './breakpoints.css';
-/* import components responsive scaffold (media-query templates) */
-@import './components-scaffold.css';
 
 /* a blue color as a generic focus style */
 button:focus-visible {
