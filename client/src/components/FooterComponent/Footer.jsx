@@ -4,6 +4,13 @@ import logo from '../../assets/img/Group.svg'
 import instagramIcon from '../../assets/img/instagram.svg'
 import facebookIcon from '../../assets/img/facebook.svg'
 import twitterIcon from '../../assets/img/twitterx.png'
+import inicioImg from '../../assets/img/inicio.png'
+import productosImg from '../../assets/img/productos.png'
+import promocionesImg from '../../assets/img/promociones.png'
+import contactoImg from '../../assets/img/contacto.png'
+import faqImg from '../../assets/img/faq.png'
+import entregaImg from '../../assets/img/entrega.png'
+import devolucionesImg from '../../assets/img/devoluciones.png'
 
 export const Footer = () => {
   return (
@@ -11,26 +18,67 @@ export const Footer = () => {
       <div className="cf-footer-inner">
         <div className="cf-footer-brand">
           <img src={logo} alt="Catfecito" className="cf-footer-logo" />
-          <p className="cf-footer-desc">CatFecito - Café con amor. Descubre y compra los mejores granos seleccionados.</p>
+          <p className="cf-footer-desc cf-footer-desc-full">CatFecito - Café con amor. Descubre y compra los mejores granos seleccionados.</p>
+          <p className="cf-footer-desc cf-footer-desc-short">CatFecito - Café con amor.</p>
         </div>
 
         <div className="cf-footer-links">
-          <div>
-            <h4>Explorar</h4>
-            <ul>
-              <li><a href="/">Inicio</a></li>
-              <li><a href="/products">Productos</a></li>
-              <li><a href="#">Promociones</a></li>
-              <li><a href="#">Contacto</a></li>
-            </ul>
-          </div>
+            <div>
+              <h4>Explorar</h4>
+              <ul className="cf-explore-list">
+                <li className="cf-explore-item">
+                  <a href="/">
+                    <span className="cf-explore-text">Inicio</span>
+                    <img className="cf-explore-img" src={inicioImg} alt="Inicio" title="Inicio" />
+                  </a>
+                </li>
+
+                <li className="cf-explore-item">
+                  <a href="/products">
+                    <span className="cf-explore-text">Productos</span>
+                    <img className="cf-explore-img" src={productosImg} alt="Productos" title="Productos" />
+                  </a>
+                </li>
+
+                <li className="cf-explore-item">
+                  <a href="#">
+                    <span className="cf-explore-text">Promociones</span>
+                    <img className="cf-explore-img" src={promocionesImg} alt="Promociones" title="Promociones" />
+                  </a>
+                </li>
+
+                <li className="cf-explore-item">
+                  <a href="#">
+                    <span className="cf-explore-text">Contacto</span>
+                    <img className="cf-explore-img" src={contactoImg} alt="Contacto" title="Contacto" />
+                  </a>
+                </li>
+              </ul>
+            </div>
 
           <div>
             <h4>Soporte</h4>
-            <ul>
-              <li><a href="#">Preguntas frecuentes</a></li>
-              <li><a href="#">Envíos</a></li>
-              <li><a href="#">Devoluciones</a></li>
+            <ul className="cf-support-list">
+              <li className="cf-support-item">
+                <a href="#">
+                  <span className="cf-support-text">Preguntas frecuentes</span>
+                  <img className="cf-support-img" src={faqImg} alt="Preguntas frecuentes" title="Preguntas frecuentes" />
+                </a>
+              </li>
+
+              <li className="cf-support-item">
+                <a href="#">
+                  <span className="cf-support-text">Envíos</span>
+                  <img className="cf-support-img" src={entregaImg} alt="Envíos" title="Envíos" />
+                </a>
+              </li>
+
+              <li className="cf-support-item">
+                <a href="#">
+                  <span className="cf-support-text">Devoluciones</span>
+                  <img className="cf-support-img" src={devolucionesImg} alt="Devoluciones" title="Devoluciones" />
+                </a>
+              </li>
             </ul>
           </div>
 

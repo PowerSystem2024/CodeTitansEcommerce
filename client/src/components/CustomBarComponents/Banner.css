@@ -36,19 +36,22 @@
 /* === ESTILOS PARA EL CONTENIDO SUPERPUESTO (NUEVO) === */
 
 .slide-content {
+  /* Place the content in the top-left corner on all viewports by default.
+     This keeps the copy visible over busy images and matches the requested layout. */
   position: absolute;
-  top: 50%;
-  left: 12%; /* Posición desde la izquierda */
-  transform: translateY(-50%);
+  top: 12px;
+  left: 12px;
+  transform: none;
   z-index: 5; /* Asegura que esté por encima de la imagen */
   display: flex;
   flex-direction: column;
   align-items: flex-start; /* Alinea los elementos a la izquierda */
-  gap: 25px; /* Espacio entre logo, texto y botón */
-  max-width: 450px;
+  gap: 20px; /* Espacio entre logo, texto y botón */
+  max-width: 520px;
   color: #fff;
-  padding: 20px;
-  
+  padding: 18px;
+  /* no backdrop: content sits directly above the image */
+  border-radius: 8px;
 }
 
 
@@ -64,7 +67,8 @@
   font-size: 1.3rem;
   line-height: 1.6;
   color: #E0E0E0; /* Un color de texto claro para buen contraste */
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6); /* Sombra para legibilidad */
+  /* Sombra sutil más definida para mejorar legibilidad sin backdrop */
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.65);
 }
 
 .slide-content .buy-button {
@@ -157,9 +161,12 @@
     padding: 20px;
   }
   .slide-content {
-    left: 5%;
-    max-width: 80%;
-    gap: 15px;
+    /* keep top-left placement but reduce width for medium screens */
+    top: 12px;
+    left: 12px;
+    max-width: 420px;
+    gap: 14px;
+  padding: 12px;
   }
   .slide-content .logo {
     width: 200px;
@@ -174,15 +181,65 @@
     height: 400px;
     padding: 10px;
   }
+  /* Move the content to the top-left corner on smaller screens and reduce sizes
+     so the text doesn't get lost behind the image. Keep a soft padding and
+     semi-transparent backdrop for legibility. */
   .slide-content {
-    /* Centramos el contenido en pantallas pequeñas */
-    align-items: center;
-    text-align: center;
-    left: 50%;
-    width: 90%;
-    transform: translate(-50%, -50%);
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    transform: none;
+    align-items: flex-start;
+    text-align: left;
+    width: calc(100% - 32px);
+    max-width: 360px;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    /* Mobile backdrop to ensure contrast on small screens */
+    background: rgba(0,0,0,0.25);
   }
   .slide-content .logo {
-    width: 180px;
+    width: 150px;
   }
+}
+
+@media (max-width: 576px) {
+  .hero-slider {
+    height: 320px;
+    padding: 8px;
+  }
+  .slide-content {
+    top: 10px;
+    left: 10px;
+    max-width: 320px;
+    padding: 8px 10px;
+    /* Slightly stronger backdrop on very small screens */
+    background: rgba(0,0,0,0.28);
+  }
+  .slide-content .logo {
+    width: 120px;
+  }
+  .slide-content .text {
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+  .slide-content .buy-button {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Responsive scaffold: media-query templates for this component */
+@media (max-width: 576px) {
+}
+@media (min-width: 577px) and (max-width: 767px) {
+}
+@media (min-width: 768px) and (max-width: 991px) {
+}
+@media (min-width: 992px) and (max-width: 1199px) {
+}
+@media (min-width: 1200px) and (max-width: 1399px) {
+}
+@media (min-width: 1400px) {
 }
