@@ -2,12 +2,12 @@ import "../styles/CustomBar.css";
 import "../styles/index.css";
 import "../styles/App.css";
 import "animate.css";
+import MetaData from "../components/ui/MetaData/MetaData";
 
-
-import { NavBar } from "./CustomBarComponents/NavBar";
-import { Header } from "./CustomBarComponents/Header";
-import { Banner } from "./CustomBarComponents/Banner";
-import { Footer } from "./FooterComponent/Footer";
+import { NavBar } from "../components/CustomBarComponents/NavBar";
+import { Header } from "../components/CustomBarComponents/Header";
+import { Banner } from "../components/CustomBarComponents/Banner";
+import { Footer } from "../components/FooterComponent/Footer";
 
 
 export const HomePage = ({
@@ -22,6 +22,7 @@ export const HomePage = ({
 }) => {
   return (
     <>
+      <MetaData title="Catfecito" />
       <Header
               cartItems={cartItems}
               itemCount={itemCount}

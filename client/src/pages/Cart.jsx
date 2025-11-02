@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from '../services/api';
+import "./Cart.css";
 import "./Cart.css";
 
 export const Cart = ({

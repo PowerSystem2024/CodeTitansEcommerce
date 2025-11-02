@@ -1,22 +1,22 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React from "react";
 import { useCartLogic } from "./hooks/useCartLogic";
-import { HomePage } from "./components/HomePage";
-import { Products } from "./components/Products";
-import { FloatingCart } from "./components/FloatingCart";
-import { Login } from "./components/Login";
-import { Register } from "./components/Register";
+import { HomePage } from "./pages/HomePage";
+import { Products } from "./pages/Products";
+import { FloatingCart } from "./components/cartComponents/FloatingCart";
+import { Login } from "./pages/Login";
+import { Register } from "./pages/Register";
 import ModalContainer from "./components/Modal/ModalContainer";
 import { useState, useEffect } from 'react';
-import { Profile } from "./components/Profile";
-import { AdminProfile } from "./components/AdminProfile";
+import { Profile } from "./pages/Profile";
+import { AdminProfile } from "./pages/AdminProfile";
 import AdminInsert from "./components/admincomponents/AdminInsert";
 import AdminUpdate from "./components/admincomponents/AdminUpdate";
 import AdminDelete from "./components/admincomponents/AdminDelete";
 import ProfileInfo from "./components/profileComponents/ProfileInfo";
 import ProfileOrders from "./components/profileComponents/ProfileOrders";
 import ProfileAddress from "./components/profileComponents/ProfileAddress";
-import { CheckoutPage } from "./components/CheckoutPage";
+import { CheckoutPage } from "./pages/CheckoutPage";
 import AdminOrders from "./components/admincomponents/AdminOrders";
 
 

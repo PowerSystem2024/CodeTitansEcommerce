@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import '../Profile.css';
+import '../../pages/Profile.css';
 
 export const ProfileNav = () => {
   return (

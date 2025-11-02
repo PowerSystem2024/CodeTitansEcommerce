@@ -1,13 +1,9 @@
 import { useEffect } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
-import { UserHeader } from './UserHeader';
+import { UserHeader } from '../components/usersComponents/UserHeader';
+import MetaData from '../components/ui/MetaData/MetaData';
 import './AdminProfile.css';
-import AdminNav from './adminComponents/AdminNav';
-
-const API_BASE =
-	(import.meta.env.VITE_BACKEND_URL
-		? `${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/api`
-		: '/api');
+import AdminNav from '../components/adminComponents/AdminNav';
 
 
 export const AdminProfile = () => {
@@ -29,6 +25,7 @@ export const AdminProfile = () => {
 
 	return (
 		<>
+			<MetaData title="Perfil de administrador" />
 			<UserHeader />
 			<main className="profile-page-admin">
 				<div className="profile-admin-container">

@@ -1,8 +1,11 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { UserHeader } from './UserHeader';
-import { CheckoutButton } from './checkoutPageComponent/CheckoutButton';
-import './checkoutPageComponent/CheckoutButton.css';
+import { UserHeader } from '../components/usersComponents/UserHeader';
+import MetaData from '../components/ui/MetaData/MetaData';
+import api from '../services/api';
+import { CheckoutButton } from '../components/checkoutPageComponent/CheckoutButton';
+import '../components/checkoutPageComponent/CheckoutButton.css';
+import './CheckoutPage.css';
 
 export const CheckoutPage = ({
   cartItems = [],
@@ -31,7 +34,6 @@ export const CheckoutPage = ({
 
   const total = useMemo(() => subtotal, [subtotal]);
   const BACKEND_ORIGIN = import.meta.env.VITE_BACKEND_URL ? import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '') : '';
-  const API_BASE = BACKEND_ORIGIN ? `${BACKEND_ORIGIN}/api` : '/api';
   const getToken = () => (sessionStorage.getItem('authToken') || sessionStorage.getItem('token') || '').toString().trim();
   
 
@@ -75,21 +77,9 @@ export const CheckoutPage = ({
       }
 
       try {
-        const response = await fetch(`${API_BASE}/users/profile`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await api.get('/users/profile');
 
-        if (!response.ok) {
-          if (response.status === 401) {
-            navigate('/login');
-            return;
-          }
-          throw new Error('Error al cargar perfil');
-        }
-
-        const data = await response.json();
+        const data = response.data;
         const user = data?.user;
 
         // Autocompletar formulario con dirección guardada
@@ -119,7 +109,7 @@ export const CheckoutPage = ({
     };
 
     loadUserAddress();
-  }, [API_BASE, navigate]);
+  }, [navigate]);
 
   // Verificar si el formulario está completo para mostrar el botón de pago
   const isFormComplete = useMemo(() => {
@@ -180,21 +170,14 @@ export const CheckoutPage = ({
       // 1. Guardar dirección si el usuario lo solicitó
       if (saveAddress) {
         try {
-          await fetch(`${API_BASE}/users/address`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              default_country: form.country,
-              default_address: form.address,
-              default_address2: form.address2,
-              default_city: form.city,
-              default_state: form.state,
-              default_zip: form.zip,
-              default_phone: form.phone,
-            }),
+          await api.put('/users/address', {
+            default_country: form.country,
+            default_address: form.address,
+            default_address2: form.address2,
+            default_city: form.city,
+            default_state: form.state,
+            default_zip: form.zip,
+            default_phone: form.phone,
           });
           // No mostrar error si falla guardar dirección, continuar con la orden
         } catch (e) {
@@ -203,50 +186,26 @@ export const CheckoutPage = ({
       }
 
       // 2. Crear orden con dirección completa
-      const orderResp = await fetch(`${API_BASE}/orders`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          shipping_first_name: form.firstName,
-          shipping_last_name: form.lastName,
-          shipping_country: form.country,
-          shipping_address: form.address,
-          shipping_address2: form.address2,
-          shipping_city: form.city,
-          shipping_state: form.state,
-          shipping_zip: form.zip,
-          shipping_phone: form.phone,
-        }),
+      const orderResp = await api.post('/orders', {
+        shipping_first_name: form.firstName,
+        shipping_last_name: form.lastName,
+        shipping_country: form.country,
+        shipping_address: form.address,
+        shipping_address2: form.address2,
+        shipping_city: form.city,
+        shipping_state: form.state,
+        shipping_zip: form.zip,
+        shipping_phone: form.phone,
       });
 
-      if (!orderResp.ok) {
-        const err = await orderResp.json().catch(() => ({}));
-        throw new Error(err.message || 'Error al crear la orden');
-      }
-
-      const orderData = await orderResp.json();
+      const orderData = orderResp.data;
       const createdOrderId = orderData?.order?.id;
       if (!createdOrderId) throw new Error('No se obtuvo el ID de la orden');
 
       // 2. Crear preferencia de MercadoPago
-      const prefResp = await fetch(`${API_BASE}/payments/create-preference`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ order_id: createdOrderId }),
-      });
+      const prefResp = await api.post('/payments/create-preference', { order_id: createdOrderId });
 
-      if (!prefResp.ok) {
-        const err = await prefResp.json().catch(() => ({}));
-        throw new Error(err.message || 'Error al crear preferencia de pago');
-      }
-
-      const prefData = await prefResp.json();
+      const prefData = prefResp.data;
       setPreferenceId(prefData.preference_id);
 
     } catch (err) {
@@ -259,6 +218,7 @@ export const CheckoutPage = ({
 
   return (
     <div className="checkout-page">
+      <MetaData title="Pantalla de pago - Catfecito" />
       <div className="checkout-header-wrapper">
         <UserHeader />
       </div>

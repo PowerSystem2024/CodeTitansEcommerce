@@ -1,19 +1,20 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from 'axios';
+import api from '../services/api';
 import "../styles/CustomBar.css";
 import "../styles/index.css";
 import "../styles/App.css";
 import "animate.css";
 import "./Products.css";
-import { Header } from "./CustomBarComponents/Header";
-import { NavBar } from "./CustomBarComponents/NavBar";
-import { ProductBanner } from "./ProductsComponents/ProductBanner";
-import { Breadcrumb } from "./ProductsComponents/Breadcrumb";
-import { ProductFilters } from "./ProductsComponents/ProductFilters";
-import { SortBar } from "./ProductsComponents/SortBar";
-import { ProductsList } from "./ProductsComponents/ProductsList";
-import { Footer } from "./FooterComponent/Footer";
+import MetaData from "../components/ui/MetaData/MetaData";
+import { Header } from "../components/CustomBarComponents/Header";
+import { NavBar } from "../components/CustomBarComponents/NavBar";
+import { ProductBanner } from "../components/ProductsComponents/ProductBanner";
+import { Breadcrumb } from "../components/ProductsComponents/Breadcrumb";
+import { ProductFilters } from "../components/ProductsComponents/ProductFilters";
+import { SortBar } from "../components/ProductsComponents/SortBar";
+import { ProductsList } from "../components/ProductsComponents/ProductsList";
+import { Footer } from "../components/FooterComponent/Footer";
 
 export const Products = ({ 
   cartItems = [],
@@ -40,8 +41,7 @@ export const Products = ({
       try {
         setLoading(true);
         setError(null);
-        const API_BASE = (import.meta.env.VITE_BACKEND_URL ? `${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/api` : '/api');
-        const { data } = await axios.get(`${API_BASE}/products`, { signal: controller.signal });
+        const { data } = await api.get('/products', { signal: controller.signal });
 
         // Backend devuelve { success, products: [...] }
         const list = Array.isArray(data?.products) ? data.products : (Array.isArray(data) ? data : []);
@@ -237,6 +237,7 @@ export const Products = ({
 
   return (
     <>
+      <MetaData title="Café de grano" />
       <Header
         cartItems={cartItems}
         itemCount={itemCount}

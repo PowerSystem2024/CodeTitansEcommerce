@@ -1,14 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../services/api';
 import '../styles/Auth.css';
 import logo from '../assets/img/Group.svg';
-
-
-const API_BASE =
-  (import.meta.env.VITE_BACKEND_URL
-    ? `${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/api`
-    : '/api');
 
 export const Register = ({ onSwitch, onSuccess }) => {
   const [firstName, setFirstname] = useState('');
@@ -23,7 +17,7 @@ export const Register = ({ onSwitch, onSuccess }) => {
     const name = `${firstName} ${lastName}`.trim();
 
     try {
-        const { data } = await axios.post(`${API_BASE}/auth/register`, { 
+        const { data } = await api.post('/auth/register', { 
             name, 
             email, 
             password 
@@ -32,7 +26,7 @@ export const Register = ({ onSwitch, onSuccess }) => {
     if (data?.token) {
       sessionStorage.setItem('authToken', data.token);
       if (data.user) sessionStorage.setItem('authUser', JSON.stringify(data.user));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+      api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
       if (typeof onSuccess === 'function') return onSuccess(data);
       window.location.replace('/'); // recarga para sincronizar carrito
     } else {

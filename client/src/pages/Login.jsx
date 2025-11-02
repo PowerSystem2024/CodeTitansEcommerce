@@ -1,13 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../services/api';
 import '../styles/Auth.css';
 import logo from '../assets/img/Group.svg';
-
-const API_BASE =
-  (import.meta.env.VITE_BACKEND_URL
-    ? `${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/api`
-    : '/api');
 
 export const Login = ({ onSwitch, onSuccess }) => {
 
@@ -17,13 +12,13 @@ export const Login = ({ onSwitch, onSuccess }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-  const { data } = await axios.post(`${API_BASE}/auth/login`, { email, password });
+  const { data } = await api.post('/auth/login', { email, password });
       // Espera { user, token, ... }
       if (data?.token) {
         sessionStorage.setItem('authToken', data.token);
         sessionStorage.setItem('authUser', JSON.stringify(data.user));
         window.dispatchEvent(new Event('authChanged'));
-        axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+        api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
         // Llamar onSuccess si fue pasado (permite cerrar modal sin navegar)
         if (typeof onSuccess === 'function') return onSuccess(data);
         // Fallback: recarga para compatibilidad con comportamiento previo

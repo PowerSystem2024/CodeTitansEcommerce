@@ -1,8 +1,8 @@
 import React from "react";
 import axios from "axios";
-import "./CustomBarComponents/Header.css";
-import group from "../assets/img/Group.svg";
-import user from "../assets/img/user.svg";
+import "../CustomBarComponents/Header.css";
+import group from "../../assets/img/Group.svg";
+import user from "../../assets/img/user.svg";
 import { useNavigate } from "react-router-dom";
 
 export const UserHeader = () => {

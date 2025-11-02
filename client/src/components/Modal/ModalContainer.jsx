@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/ModalContainer.css';
-import { Login } from '../Login';
-import { Register } from '../Register';
+import { Login } from '../../pages/Login';
+import { Register } from '../../pages/Register';
 import { ConstructionComponent } from '../constructionComponent/constructionComponent';
 import { LogoutPopUpComponent } from '../LogoutPopUpComponent/LogoutPopUpComponent';
 

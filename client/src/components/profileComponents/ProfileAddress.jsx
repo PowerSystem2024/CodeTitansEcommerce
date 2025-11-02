@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import '../Profile.css';
+import '../../pages/Profile.css';
 
 const API_BASE = (import.meta.env.VITE_BACKEND_URL
   ? `${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/api`
