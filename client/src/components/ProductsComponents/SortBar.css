@@ -16,6 +16,10 @@
   min-width: 250px;
 }
 
+.facets-vertical-form--anchored {
+  margin-left: auto; /* helper class if needed to force right anchoring */
+}
+
 .order-by {
   margin: 0;
   font-family: 'Poppins', sans-serif;
@@ -90,11 +94,42 @@
   }
 }
 
+/* Mid breakpoint: avoid overlap around ~835px by shrinking gaps and control widths */
+@media (max-width: 900px) and (min-width: 769px) {
+  .sortbar-row {
+    gap: 12px;
+  }
+
+  .search-tag-placeholder {
+    flex: 1 1 220px;
+  }
+
+  .search-tag-value {
+    max-width: 120px;
+  }
+
+  .facets-vertical-form {
+    min-width: 180px;
+    max-width: 260px;
+    gap: 10px;
+    margin-left: auto; /* ensure it stays on the right */
+  }
+
+  .select {
+    min-width: 150px;
+  }
+
+  .sort-by-category {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+}
+
 /* Layout row: tag a la izquierda, sort a la derecha */
 .sortbar-row {
   display: flex;
   align-items: center;
-  gap: 600px;
+  gap: 16px; /* avoid huge fixed gap that breaks on narrow screens */
   justify-content: space-between;
   margin-bottom: 12px;
 }
@@ -110,7 +145,9 @@
   box-shadow: 0 3px 10px rgba(0,0,0,0.06);
   color: #3b2b20;
   font-size: 14px;
-  flex: 0 0 auto;
+  /* allow the tag to shrink on small screens so the sort control can stay right */
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .search-tag-label {
@@ -145,7 +182,38 @@
 
 /* placeholder para mantener spacing cuando no hay búsqueda */
 .search-tag-placeholder {
-  flex: 0 0 320px; /* ajusta ancho igual al tag para alinear */
+  /* placeholder keeps spacing but is flexible */
+  flex: 1 1 320px; /* allows shrink while keeping approximate width on desktop */
+  min-width: 0;
+}
+
+/* Make the sort form take only the necessary space and stay aligned right */
+.facets-vertical-form {
+  flex: 0 0 auto;
+}
+
+/* Responsive adjustments: on tablet/mobile ensure the sort control stays at the right side */
+@media (max-width: 768px) {
+  .sortbar-row {
+    gap: 12px;
+    /* keep row layout but allow elements to wrap if necessary */
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+
+  .facets-vertical-form {
+    max-width: 320px;
+    width: auto;
+    align-self: flex-end; /* ensure it stays visually on the right */
+  }
+
+  .search-tag, .search-tag-placeholder {
+    flex: 1 1 auto;
+  }
+
+  .search-tag-value {
+    max-width: 160px;
+  }
 }
 
 /* Responsive scaffold: media-query templates for this component */

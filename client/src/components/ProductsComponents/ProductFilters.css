@@ -6,11 +6,13 @@
 
 .filter-disponibility {
   width: 375px;
-  height: 750px;
+  /* Prefer a flexible height instead of a fixed 750px so the panel behaves better on different screen sizes */
+  min-height: 100%;
+  max-height: calc(100vh - 120px);
   flex-shrink: 0;
   background: transparent;
   border-right: 1px solid rgba(0,0,0,0.06);
-  overflow-y: auto;
+  overflow-y: clip;
 }
 
 .wbblankinner {
@@ -135,6 +137,7 @@
 
 .range-wrap input[type="range"] {
   -webkit-appearance: none;
+  appearance: none;
   width: 100%;
   height: 18px;
   background: transparent;
@@ -195,5 +198,108 @@
   
   .two-column {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Tablet: make the sidebar a bit narrower and increase touch targets */
+@media (max-width: 1024px) {
+  .filter-disponibility {
+    width: 320px;
+    max-height: calc(100vh - 140px);
+  }
+
+  .wbblankinner {
+    padding: 18px;
+  }
+
+  .wbblankinner h2 {
+    font-size: 16px;
+  }
+
+  .filter-summary {
+    font-size: 14px;
+    padding: 8px 0;
+  }
+
+  .filter-option {
+    font-size: 13px;
+    gap: 10px;
+    padding: 8px 0;
+  }
+
+  .filter-option input[type="checkbox"] {
+    width: 1.3em;
+    height: 1.3em;
+  }
+
+  .price-filter .price-inputs {
+    gap: 10px;
+  }
+}
+
+/* Mobile: stack inputs, enlarge controls for touch, and reduce paddings */
+@media (max-width: 600px) {
+  .page-width-vertical-coll {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .filter-disponibility {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    /* let the content determine height on small devices */
+    max-height: none;
+  }
+
+  .wbblankinner {
+    padding: 14px 8px;
+  }
+
+  .wbblankinner h2 {
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+
+  .filter-summary {
+    font-size: 15px;
+    padding: 10px 0;
+  }
+
+  .filter-option {
+    font-size: 14px;
+    gap: 12px;
+    padding: 10px 6px;
+  }
+
+  .filter-option input[type="checkbox"] {
+    width: 1.4em;
+    height: 1.4em;
+  }
+
+  .price-filter .price-inputs {
+    flex-direction: column;
+  }
+
+  .price-filter input[type="number"] {
+    width: 100%;
+  }
+
+  .range-wrap {
+    height: 22px;
+  }
+
+  .range-wrap input[type="range"]::-webkit-slider-thumb {
+    width: 22px;
+    height: 22px;
+  }
+
+  .two-column {
+    grid-template-columns: 1fr;
+    gap: 8px 12px;
+  }
+
+  .filter-section {
+    margin-bottom: 12px;
   }
 }
