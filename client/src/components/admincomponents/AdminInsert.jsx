@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../services/api';
 import '../../pages/AdminProfile.css';
-
-const API_BASE = (import.meta.env.VITE_BACKEND_URL ? `${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/api` : '/api');
-
-const authHeaders = () => {
-  const token = sessionStorage.getItem('authToken');
-  return token ? { Authorization: `Bearer ${token}` } : {};
-};
 
 export default function AdminInsert() {
   const [categories, setCategories] = useState([]);
@@ -20,7 +13,7 @@ export default function AdminInsert() {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await axios.get(`${API_BASE}/categories`);
+        const { data } = await api.get('/categories');
         setCategories(Array.isArray(data?.categories) ? data.categories : data);
       } catch (e) { console.error(e); }
     })();
@@ -42,7 +35,7 @@ export default function AdminInsert() {
       const fd = new FormData();
       Object.entries(form).forEach(([k,v]) => { if (v !== '') fd.append(k, v); });
       if (imageFile) fd.append('image', imageFile);
-      const { data } = await axios.post(`${API_BASE}/products`, fd, { headers: { ...authHeaders() } });
+      const { data } = await api.post('/products', fd);
       setSuccess(data?.message || 'Producto creado');
       setForm({ name: '', description: '', price: '', stock: '', category_id: '' });
       setImageFile(null);

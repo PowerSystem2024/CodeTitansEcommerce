@@ -1,15 +1,6 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import "../profileComponents/ProfileOrders.css";
-
-const API_BASE = import.meta.env.VITE_BACKEND_URL
-  ? `${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, "")}/api`
-  : "/api";
-
-const authHeaders = () => {
-  const token = sessionStorage.getItem("authToken");
-  return token ? { Authorization: `Bearer ${token}` } : {};
-};
 
 export default function AdminOrders() {
   const [orders, setOrders] = useState([]);
@@ -40,9 +31,7 @@ export default function AdminOrders() {
       try {
         setLoading(true);
         setError("");
-        const { data } = await axios.get(`${API_BASE}/orders/admin/all`, {
-          headers: { ...authHeaders() },
-        });
+        const { data } = await api.get('/orders/admin/all');
         setOrders(Array.isArray(data?.orders) ? data.orders : []);
       } catch (e) {
         setError(e?.response?.data?.message || "Error al obtener órdenes");
@@ -60,9 +49,7 @@ export default function AdminOrders() {
     }
     if (!orderDetails[orderId]) {
       try {
-        const { data } = await axios.get(`${API_BASE}/orders/admin/${orderId}`, {
-          headers: { ...authHeaders() },
-        });
+        const { data } = await api.get(`/orders/admin/${orderId}`);
         setOrderDetails((prev) => ({
           ...prev,
           [orderId]: data.order,

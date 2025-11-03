@@ -6,7 +6,7 @@ import user from "../../assets/img/user.svg";
 import cart from "../../assets/img/cart.svg";
 import { Cart } from "../../pages/Cart";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../services/api";
 import logout from "../../assets/img/logout.svg";
 import { debounce } from 'lodash'; // Necesitarás instalar lodash: npm install lodash
 
@@ -49,11 +49,6 @@ export const Header = ({
   const inputRef = useRef(null);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
 
-  const API_BASE =
-    (import.meta.env.VITE_BACKEND_URL
-      ? `${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/api`
-      : '/api');
-
   // Hook para gestionar el estado de login
   useEffect(() => {
     const onStorage = () => setIsLogged(!!sessionStorage.getItem('authToken'));
@@ -74,9 +69,7 @@ export const Header = ({
     const token = sessionStorage.getItem('authToken');
     try {
       if (token) {
-        await axios.post(`${API_BASE}/auth/logout`, {}, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        await api.post('/auth/logout', {});
       }
     } catch {
       // ignorar errores de logout
@@ -117,7 +110,7 @@ export const Header = ({
     setIsSearching(true);
     try {
       // Trae todos los productos activos
-      const { data } = await axios.get(`${API_BASE}/products`);
+      const { data } = await api.get('/products');
       // data.products porque tu backend responde { success, count, products }
       const products = data.products || [];
       // Normaliza y filtra por nombre o categoría
@@ -144,7 +137,7 @@ export const Header = ({
   };
   
   // Usamos useCallback para memorizar la función debounced
-  const debouncedSearch = useCallback(debounce(performSearch, 300), [API_BASE]);
+  const debouncedSearch = useCallback(debounce(performSearch, 300), []);
 
   useEffect(() => {
     debouncedSearch(searchQuery);

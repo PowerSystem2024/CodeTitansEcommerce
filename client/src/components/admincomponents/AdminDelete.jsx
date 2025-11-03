@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../services/api';
 import '../../pages/AdminProfile.css';
-
-const API_BASE = (import.meta.env.VITE_BACKEND_URL ? `${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/api` : '/api');
-
-const authHeaders = () => {
-  const token = sessionStorage.getItem('authToken');
-  return token ? { Authorization: `Bearer ${token}` } : {};
-};
 
 export default function AdminDelete(){
   const [id, setId] = useState('');
@@ -24,7 +17,7 @@ export default function AdminDelete(){
     if (!id) { setMessage('Id requerido'); return; }
     setLoading(true);
     try {
-      const { data } = await axios.delete(`${API_BASE}/products/${id}`, { headers: { ...authHeaders() } });
+      const { data } = await api.delete(`/products/${id}`);
       setMessage(data?.message || 'Producto eliminado');
       setMessageType('success');
     } catch (err) {
@@ -38,7 +31,7 @@ export default function AdminDelete(){
     setMessage('');
     setLoadingProduct(true);
     try {
-      const { data } = await axios.get(`${API_BASE}/products/${id}`);
+      const { data } = await api.get(`/products/${id}`);
       setProduct(data?.product || null);
     } catch (err) {
       setMessage(err?.response?.data?.message || 'No se pudo cargar el producto');
@@ -51,7 +44,7 @@ export default function AdminDelete(){
     let mounted = true;
     (async () => {
       try {
-        const { data } = await axios.get(`${API_BASE}/products`);
+        const { data } = await api.get('/products');
         const list = Array.isArray(data?.products) ? data.products : (Array.isArray(data) ? data : []);
         if (mounted) setProductsList(list);
       } catch (e) { console.error('No se pudo cargar lista de productos', e); }

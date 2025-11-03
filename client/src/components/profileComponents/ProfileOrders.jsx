@@ -1,16 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import axios from "axios";
+import api from "../../services/api";
 import "./ProfileOrders.css";
-
-const API_BASE = import.meta.env.VITE_BACKEND_URL
-  ? `${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, "")}/api`
-  : "/api";
-
-const authHeaders = () => {
-  const token = sessionStorage.getItem("authToken");
-  return token ? { Authorization: `Bearer ${token}` } : {};
-};
 
 export default function ProfileOrders() {
   const navigate = useNavigate();
@@ -67,9 +58,7 @@ export default function ProfileOrders() {
       try {
         setLoading(true);
         setError("");
-        const { data } = await axios.get(`${API_BASE}/orders`, {
-          headers: { ...authHeaders() },
-        });
+        const { data } = await api.get('/orders');
         setOrders(Array.isArray(data?.orders) ? data.orders : []);
       } catch (e) {
         if (e?.response?.status === 401) {
@@ -95,9 +84,7 @@ export default function ProfileOrders() {
 
     if (!orderDetails[orderId]) {
       try {
-        const { data } = await axios.get(`${API_BASE}/orders/${orderId}`, {
-          headers: { ...authHeaders() },
-        });
+        const { data } = await api.get(`/orders/${orderId}`);
         setOrderDetails((prev) => ({
           ...prev,
           [orderId]: data.order,
@@ -112,10 +99,7 @@ export default function ProfileOrders() {
 
   const continuePayment = async (orderId) => {
     try {
-      const { data } = await axios.post(`${API_BASE}/payments/create-preference`,
-        { order_id: orderId },
-        { headers: { ...authHeaders() } }
-      );
+      const { data } = await api.post('/payments/create-preference', { order_id: orderId });
       // mercado pago puede devolver init_point o preference.init_point según SDK/version
       const url = data?.init_point || data?.preference?.init_point || data?.payment_url;
       if (url) {
@@ -134,9 +118,7 @@ export default function ProfileOrders() {
     if (!ok) return;
 
     try {
-      const { data } = await axios.patch(`${API_BASE}/orders/${orderId}/cancel`, {}, {
-        headers: { ...authHeaders() },
-      });
+      const { data } = await api.patch(`/orders/${orderId}/cancel`, {});
 
       // actualizar lista localmente
       setOrders((prev) => prev.map((o) => (o.id === orderId ? { ...o, ...data.order } : o)));

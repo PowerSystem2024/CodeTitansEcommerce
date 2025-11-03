@@ -1,9 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-
-const API_BASE = (() => {
-  const base = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
-  return base.replace(/\/$/, '') + '/api';
-})();
+import api from '../services/api';
 
 const getToken = () => {
   const ls = sessionStorage.getItem('authToken') || sessionStorage.getItem('token');
@@ -16,13 +12,6 @@ const getToken = () => {
     // ignore
   }
   return null;
-};
-
-const authHeaders = () => {
-  const token = getToken();
-  return token
-    ? { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }
-    : { 'Content-Type': 'application/json' };
 };
 
 const mapServerItem = (row) => ({
@@ -59,23 +48,18 @@ export function useCartLogic() {
     // Autenticado: traer carrito del backend y mergear items locales
     try {
       // 1) cargar carrito del servidor
-      await fetch(`${API_BASE}/cart`, { headers: authHeaders() });
+      await api.get('/cart');
 
       // 2) si hay items locales, agregarlos al servidor (sumará cantidades)
       if (savedLocal.length > 0) {
         for (const it of savedLocal) {
           const qty = Math.max(1, Number(it.quantity) || 1);
-          await fetch(`${API_BASE}/cart`, {
-            method: 'POST',
-            headers: authHeaders(),
-            body: JSON.stringify({ product_id: it.id, quantity: qty })
-          }).catch(() => {});
+          await api.post('/cart', { product_id: it.id, quantity: qty }).catch(() => {});
         }
       }
 
       // 3) recargar del servidor como fuente de verdad
-      const r2 = await fetch(`${API_BASE}/cart`, { headers: authHeaders() });
-      const data2 = r2.ok ? await r2.json() : { items: [] };
+      const { data: data2 } = await api.get('/cart');
       const merged = Array.isArray(data2.items) ? data2.items.map(mapServerItem) : [];
 
       setItems(merged);
@@ -115,14 +99,10 @@ export function useCartLogic() {
 
     // sync backend si autenticado
     if (getToken()) {
-      fetch(`${API_BASE}/cart`, {
-        method: 'POST',
-        headers: authHeaders(),
-        body: JSON.stringify({ product_id: product.id, quantity: 1 })
-      })
-      .then(async (r) => r.ok ? r.json() : Promise.reject())
-      .then((data) => {
+      api.post('/cart', { product_id: product.id, quantity: 1 })
+      .then((res) => {
         // actualizar item con datos del servidor (ids/cantidades reales)
+        const data = res.data;
         if (data?.item) {
           const serverItem = mapServerItem(data.item);
           setItems(prev => {
@@ -131,9 +111,8 @@ export function useCartLogic() {
           });
         } else {
           // como fallback, refrescar todo
-          return fetch(`${API_BASE}/cart`, { headers: authHeaders() })
-            .then(r => r.json())
-            .then(d => setItems((d.items || []).map(mapServerItem)));
+          return api.get('/cart')
+            .then(res => setItems((res.data.items || []).map(mapServerItem)));
         }
       })
       .catch(() => {});
@@ -148,10 +127,8 @@ export function useCartLogic() {
     setItems(prev => prev.filter(i => i.id !== productId));
 
     if (getToken() && item?.cartItemId) {
-      fetch(`${API_BASE}/cart/${item.cartItemId}`, {
-        method: 'DELETE',
-        headers: authHeaders()
-      }).catch(() => {});
+      api.delete(`/cart/${item.cartItemId}`)
+        .catch(() => {});
     }
   }, [items]);
 
@@ -171,16 +148,11 @@ export function useCartLogic() {
     const item = items.find(i => i.id === productId);
     if (getToken() && item?.cartItemId) {
       if (qty <= 0) {
-        fetch(`${API_BASE}/cart/${item.cartItemId}`, {
-          method: 'DELETE',
-          headers: authHeaders()
-        }).catch(() => {});
+        api.delete(`/cart/${item.cartItemId}`)
+          .catch(() => {});
       } else {
-        fetch(`${API_BASE}/cart/${item.cartItemId}`, {
-          method: 'PUT',
-          headers: authHeaders(),
-          body: JSON.stringify({ quantity: qty })
-        }).catch(() => {});
+        api.put(`/cart/${item.cartItemId}`, { quantity: qty })
+          .catch(() => {});
       }
     }
   }, [items]);
@@ -188,7 +160,7 @@ export function useCartLogic() {
   const clearCart = useCallback(() => {
     setItems([]);
     if (getToken()) {
-      fetch(`${API_BASE}/cart`, { method: 'DELETE', headers: authHeaders() }).catch(() => {});
+      api.delete('/cart').catch(() => {});
     } else {
       sessionStorage.removeItem('catfecito-cart');
     }

@@ -1,16 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../services/api';
 import '../../pages/Profile.css';
-
-const API_BASE = (import.meta.env.VITE_BACKEND_URL
-  ? `${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/api`
-  : '/api');
-
-const authHeaders = () => {
-  const token = sessionStorage.getItem('authToken');
-  return token ? { Authorization: `Bearer ${token}` } : {};
-};
 
 export default function ProfileInfo() {
   const navigate = useNavigate();
@@ -29,9 +20,7 @@ export default function ProfileInfo() {
 
     const load = async () => {
       try {
-        const { data } = await axios.get(`${API_BASE}/users/profile`, {
-          headers: { ...authHeaders() },
-        });
+        const { data } = await api.get('/users/profile');
         setUser(data?.user || null);
       } catch (e) {
         if (e?.response?.status === 401) {
@@ -59,10 +48,9 @@ export default function ProfileInfo() {
     }
 
     try {
-      const { data } = await axios.put(
-        `${API_BASE}/users/change-password`,
-        { currentPassword, newPassword },
-        { headers: { 'Content-Type': 'application/json', ...authHeaders() } }
+      const { data } = await api.put(
+        '/users/change-password',
+        { currentPassword, newPassword }
       );
       alert(data?.message || 'Contraseña actualizada');
       setCurrentPassword('');
@@ -75,11 +63,7 @@ export default function ProfileInfo() {
 
   const handleLogout = async () => {
     try {
-      await axios.post(
-        `${API_BASE}/auth/logout`,
-        {},
-        { headers: { ...authHeaders() } }
-      );
+      await api.post('/auth/logout', {});
     } catch {
       // ignorar errores de logout
     } finally {

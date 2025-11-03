@@ -1,16 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../services/api';
 import '../../pages/Profile.css';
-
-const API_BASE = (import.meta.env.VITE_BACKEND_URL
-  ? `${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/api`
-  : '/api');
-
-const authHeaders = () => {
-  const token = sessionStorage.getItem('authToken');
-  return token ? { Authorization: `Bearer ${token}` } : {};
-};
 
 export default function ProfileAddress() {
   const navigate = useNavigate();
@@ -38,9 +29,7 @@ export default function ProfileAddress() {
     // Cargar dirección actual del usuario
     const loadAddress = async () => {
       try {
-        const { data } = await axios.get(`${API_BASE}/users/profile`, {
-          headers: { ...authHeaders() },
-        });
+        const { data } = await api.get('/users/profile');
         const user = data?.user;
         if (user) {
           setFormData({
@@ -80,10 +69,9 @@ export default function ProfileAddress() {
     setLoading(true);
 
     try {
-      const { data } = await axios.put(
-        `${API_BASE}/users/address`,
-        formData,
-        { headers: { 'Content-Type': 'application/json', ...authHeaders() } }
+      const { data } = await api.put(
+        '/users/address',
+        formData
       );
       setSuccess(data?.message || 'Dirección guardada exitosamente');
     } catch (e) {

@@ -1,14 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../services/api';
 import '../../pages/AdminProfile.css';
-
-const API_BASE = (import.meta.env.VITE_BACKEND_URL ? `${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/api` : '/api');
-
-const authHeaders = () => {
-  const token = sessionStorage.getItem('authToken');
-  return token ? { Authorization: `Bearer ${token}` } : {};
-};
 
 export default function AdminUpdate() {
   const [id, setId] = useState('');
@@ -28,7 +21,7 @@ export default function AdminUpdate() {
     try {
       const body = {};
       Object.keys(payload).forEach(k => { if (payload[k] !== '') body[k] = payload[k]; });
-      const { data } = await axios.put(`${API_BASE}/products/${id}`, body, { headers: { ...authHeaders() } });
+      const { data } = await api.put(`/products/${id}`, body);
       setMessage(data?.message || 'Producto actualizado');
       setMessageType('success');
     } catch (err) {
@@ -42,7 +35,7 @@ export default function AdminUpdate() {
     setMessage('');
     setLoadingProduct(true);
     try {
-      const { data } = await axios.get(`${API_BASE}/products/${id}`);
+      const { data } = await api.get(`/products/${id}`);
       const p = data?.product || null;
       setProduct(p);
       if (p) {
@@ -65,7 +58,7 @@ export default function AdminUpdate() {
     let mounted = true;
     (async () => {
       try {
-        const { data } = await axios.get(`${API_BASE}/products`);
+        const { data } = await api.get('/products');
         const list = Array.isArray(data?.products) ? data.products : (Array.isArray(data) ? data : []);
         if (mounted) setProductsList(list);
       } catch (e) {

@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import api from "../../services/api";
 import "../CustomBarComponents/Header.css";
 import group from "../../assets/img/Group.svg";
 import user from "../../assets/img/user.svg";
@@ -8,11 +8,6 @@ import { useNavigate } from "react-router-dom";
 export const UserHeader = () => {
 
   const navigate = useNavigate();
-
-  const API_BASE =
-    (import.meta.env.VITE_BACKEND_URL
-      ? `${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}/api`
-      : '/api');
 
   const handleNavigateToHome = () => {
     console.log('Navegando a home...');
@@ -24,9 +19,7 @@ export const UserHeader = () => {
     const token = sessionStorage.getItem('authToken');
     try {
       if (token) {
-        await axios.post(`${API_BASE}/auth/logout`, {}, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        await api.post('/auth/logout', {});
       }
     } catch {
       // ignorar errores de logout
