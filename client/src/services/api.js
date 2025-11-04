@@ -9,9 +9,6 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 const api = axios.create({
   baseURL: BACKEND_URL ? `${BACKEND_URL}/api` : '/api',
   timeout: 10000, // 10 segundos timeout
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
 
 // Interceptor para agregar token de autenticación a todas las peticiones
@@ -21,6 +18,16 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    
+    // Manejar Content-Type según el tipo de datos
+    if (config.data instanceof FormData) {
+      // FormData: dejar que axios/navegador establezca multipart/form-data
+      delete config.headers['Content-Type'];
+    } else if (config.data && typeof config.data === 'object') {
+      // JSON: establecer application/json
+      config.headers['Content-Type'] = 'application/json';
+    }
+    
     return config;
   },
   (error) => Promise.reject(error)

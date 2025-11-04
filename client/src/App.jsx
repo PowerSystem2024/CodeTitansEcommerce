@@ -58,7 +58,7 @@ function App() {
 
     useEffect(() => {
     let timeout;
-    const MAX_INACTIVE_TIME = 180 * 1000; // 3 minutos
+    const MAX_INACTIVE_TIME = 600 * 1000; // 10 minutos
 
     const handleLogoutDueToInactivity = () => {
       // Elimina token y usuario

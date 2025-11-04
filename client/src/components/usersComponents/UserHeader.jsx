@@ -3,6 +3,7 @@ import api from "../../services/api";
 import "../CustomBarComponents/Header.css";
 import group from "../../assets/img/Group.svg";
 import user from "../../assets/img/user.svg";
+import logout from "../../assets/img/logout.svg";
 import { useNavigate } from "react-router-dom";
 
 export const UserHeader = () => {
@@ -12,6 +13,12 @@ export const UserHeader = () => {
   const handleNavigateToHome = () => {
     console.log('Navegando a home...');
     navigate('/');
+    console.log('Navigate ejecutado');
+  };
+
+  const handleNavigateToProducts = () => {
+    console.log('Navegando a products...');
+    navigate('/products');
     console.log('Navigate ejecutado');
   };
 
@@ -40,7 +47,7 @@ export const UserHeader = () => {
         <button
           type="button"
           className="shop-button"
-          onClick={handleNavigateToHome}
+          onClick={handleNavigateToProducts}
           aria-label="Volver a la tienda"
         >
           Shop
@@ -84,16 +91,15 @@ export const UserHeader = () => {
         >
           <img className="user" src={user} alt="Usuario" />
         </button>
-        <button
-          type="button"
-          className="shop-button"
-          onClick={handleLogout}
-          aria-label="Cerrar sesión"
-          style={{ marginLeft: 8 }}
-        >
-          Cerrar sesión
-        </button>
-        
+        {logout && (
+          <button
+            type="button"
+            className="logout-button"
+            onClick={handleLogout}
+          >
+            <img className="log-out" src={logout} alt="Cerrar sesión" />
+          </button>
+        )}
       </div>
 
       

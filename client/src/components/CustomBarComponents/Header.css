@@ -299,6 +299,11 @@
 
 @media (min-width: 1400px) {
 }
+@media (min-width: 1024px) {
+  .searcher {
+    gap: 7px;
+  }
+}
 
 /* Mobile / small screens adjustments for header layout */
 @media (max-width: 768px) {
@@ -318,6 +323,7 @@
     height: auto;
   }
 
+  
   /* Hide the searcher by default on mobile; toggled via JS adding .search-open to header */
   .searcher {
     display: none;

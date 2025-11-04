@@ -37,6 +37,25 @@
   margin-bottom: 16px;
   box-shadow: 0 1px 2px rgba(0,0,0,0.04);
   color: black;
+  box-sizing: border-box;
+}
+
+@media (max-width: 576px) {
+  .profile-container {
+    margin: 12px auto;
+    padding: 0 12px;
+  }
+
+  .profile-title {
+    font-size: 22px;
+    margin: 0 0 12px;
+  }
+
+  .profile-card {
+    padding: 16px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+  }
 }
 
 .profile-error {
@@ -105,6 +124,8 @@
   outline: none;
   background-color: #ffffff;
   color: #5b3b2b;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .btn-primary {
@@ -116,6 +137,28 @@
   padding: 10px 14px;
   border-radius: 8px;
   cursor: pointer;
+}
+
+@media (max-width: 576px) {
+  .password-form {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .password-form label {
+    grid-column: span 1;
+  }
+
+  .password-form input {
+    grid-column: span 1;
+    padding: 12px 10px;
+    font-size: 16px;
+  }
+
+  .btn-primary {
+    grid-column: span 1;
+    padding: 12px;
+  }
 }
 
 .cerrar-sesion-row {
@@ -230,6 +273,16 @@
   grid-template-columns: 1fr 1fr 1fr;
 }
 
+@media (max-width: 576px) {
+  .address-form-row.two-cols {
+    grid-template-columns: 1fr;
+  }
+
+  .address-form-row.three-cols {
+    grid-template-columns: 1fr;
+  }
+}
+
 .profile-success {
   background: #d4edda;
   color: #155724;
@@ -246,16 +299,265 @@
   color: #5b3b2b;
 }
 
+.cerrar-sesion-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-danger {
+  margin-top: 12px;
+  background: #5f3a27;
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
 /* Responsive scaffold: media-query templates for this component */
 @media (max-width: 576px) {
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .cerrar-sesion-row {
+    justify-content: stretch;
+  }
+
+  .btn-danger {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .address-form {
+    gap: 12px;
+  }
+
+  .empty-box {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .profile-fields {
+    gap: 10px;
+  }
 }
-@media (min-width: 577px) and (max-width: 767px) {
+
+@media (max-width: 375px) {
+  .profile-container {
+    margin: 8px auto;
+    padding: 0 8px;
+  }
+
+  .profile-title {
+    font-size: 18px;
+    margin: 0 0 10px;
+  }
+
+  .profile-card {
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+  }
+
+  .password-form {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .password-form label {
+    grid-column: span 1;
+    font-size: 11px;
+  }
+
+  .password-form input {
+    grid-column: span 1;
+    padding: 10px 10px;
+    font-size: 14px;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .btn-primary {
+    grid-column: span 1;
+    padding: 11px 8px;
+    font-size: 13px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .btn-danger {
+    width: 100%;
+    padding: 11px 8px;
+    font-size: 13px;
+    box-sizing: border-box;
+  }
+
+  .section-title {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .address-form {
+    gap: 10px;
+  }
+
+  .address-form label {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  .address-form input,
+  .address-form select {
+    padding: 10px 10px;
+    font-size: 14px;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .address-form-row.two-cols,
+  .address-form-row.three-cols {
+    grid-template-columns: 1fr;
+  }
+
+  .field-label {
+    font-size: 11px;
+  }
+
+  .field-value {
+    font-size: 13px;
+  }
+
+  .cerrar-sesion-row {
+    justify-content: stretch;
+  }
+
+  .empty-box {
+    padding: 10px;
+    font-size: 12px;
+    box-sizing: border-box;
+  }
 }
-@media (min-width: 768px) and (max-width: 991px) {
-}
-@media (min-width: 992px) and (max-width: 1199px) {
-}
-@media (min-width: 1200px) and (max-width: 1399px) {
-}
-@media (min-width: 1400px) {
+
+@media (max-width: 325px) {
+  .profile-container {
+    margin: 6px auto;
+    padding: 0 6px;
+  }
+
+  .profile-title {
+    font-size: 15px;
+    margin: 0 0 8px;
+  }
+
+  .profile-card {
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    box-sizing: border-box;
+  }
+
+  .password-form {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .password-form label {
+    grid-column: span 1;
+    font-size: 10px;
+    margin-bottom: 2px;
+  }
+
+  .password-form input {
+    grid-column: span 1;
+    padding: 8px 8px;
+    font-size: 12px;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .btn-primary {
+    grid-column: span 1;
+    padding: 10px 6px;
+    font-size: 12px;
+    width: 100%;
+    margin-top: 5px;
+    box-sizing: border-box;
+  }
+
+  .btn-danger {
+    width: 100%;
+    padding: 10px 6px;
+    font-size: 12px;
+    box-sizing: border-box;
+  }
+
+  .section-title {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .section-header {
+    gap: 6px;
+  }
+
+  .address-form {
+    gap: 8px;
+  }
+
+  .address-form label {
+    font-size: 10px;
+    margin-bottom: 3px;
+  }
+
+  .address-form input,
+  .address-form select {
+    padding: 8px 8px;
+    font-size: 12px;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .address-form-row.two-cols,
+  .address-form-row.three-cols {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .field-label {
+    font-size: 10px;
+  }
+
+  .field-value {
+    font-size: 12px;
+  }
+
+  .cerrar-sesion-row {
+    justify-content: stretch;
+  }
+
+  .empty-box {
+    padding: 8px;
+    font-size: 11px;
+    gap: 4px;
+    box-sizing: border-box;
+  }
+
+  .profile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .profile-nav a,
+  .profile-nav .btn-secondary {
+    width: 100%;
+    padding: 9px 6px;
+    font-size: 11px;
+    text-align: center;
+    border-radius: 6px;
+    box-sizing: border-box;
+  }
 }

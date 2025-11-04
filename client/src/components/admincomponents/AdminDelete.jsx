@@ -65,7 +65,7 @@ export default function AdminDelete(){
       <form onSubmit={remove} className="iud-products-admin">
           <div>
           <label>Producto</label>
-          <div style={{ display: 'flex', gap: 8 }}>
+          <div className="product-select-update">
             <select value={id} onChange={(e)=>setId(e.target.value)}>
               <option value="">-- Selecciona un producto --</option>
               {productsList.map(p => <option key={p.id} value={p.id}>{p.name} {p.stock != null ? `(${p.stock})` : ''}</option>)}

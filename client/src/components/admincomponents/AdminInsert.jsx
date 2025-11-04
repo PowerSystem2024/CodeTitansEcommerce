@@ -69,7 +69,14 @@ export default function AdminInsert() {
         </select>
 
         <label>Imagen</label>
-        <input type="file" accept="image/*" onChange={onFile} />
+        <div className="insert-product-image">
+          <input type="file" accept="image/*" onChange={onFile} />
+          {imageFile && (
+            <div>
+              ✓ {imageFile.name}
+            </div>
+          )}
+        </div>
 
         <button className="btn-primary-admin" disabled={loading}>{loading ? 'Creando...' : 'Crear'}</button>
       </form>

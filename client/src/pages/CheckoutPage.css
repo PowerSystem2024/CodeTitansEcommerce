@@ -121,3 +121,27 @@
 .order-item strong {
   font-weight: 600;
 }
+
+@media (max-width: 768px) {
+  .checkout-content {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 32px;
+    width: min(1100px, 95%);
+    margin: 24px auto;
+  }
+}
+
+@media (max-width: 425px) {
+  .checkout-content {
+    grid-template-columns: 1fr;
+    gap: 0px;
+  }
+  .checkout-right {
+    margin-top: 24px;
+  }
+  .checkout-left {
+    padding-top: 2px;
+  }
+}
+
