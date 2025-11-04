@@ -260,7 +260,7 @@ export const CheckoutPage = ({
 
             <div className="form-row three">
               <div>
-                <label>Código postal</label>
+                <label className="label-postal">Código postal</label>
                 <input name="zip" value={form.zip} onChange={handleChange} placeholder="Código postal" />
               </div>
               <div>
@@ -268,7 +268,7 @@ export const CheckoutPage = ({
                 <input name="city" value={form.city} onChange={handleChange} placeholder="Ciudad" />
               </div>
               <div>
-                <label>Provincia / Estado</label>
+                <label>Provincia</label>
                 <select name="state" value={form.state} onChange={handleChange}>
                   <option>Buenos Aires</option>
                   <option>Córdoba</option>

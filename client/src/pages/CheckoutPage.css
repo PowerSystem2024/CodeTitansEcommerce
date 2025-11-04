@@ -145,3 +145,34 @@
   }
 }
 
+@media (max-width: 375px) {
+  /* reemplaza "Código postal" por "CP" */
+  .shipping-form .form-row.three > div:first-child > label {
+    position: relative;
+    display: block;
+    height: auto;
+    line-height: 0.75;
+    margin: 0 0 6px 0;
+    padding: 0;
+    /* oculta el texto original sin romper el flujo */
+    visibility: hidden;
+  }
+
+  .shipping-form .form-row.three > div:first-child > label::after {
+    content: "CP";
+    position: absolute;
+    left: 0;
+    top: 0;
+    visibility: visible;
+    display: inline-block;
+    font-weight: 600;
+    color: inherit;
+    background: transparent;
+    padding: 0;
+    line-height: 1.2;
+  }
+
+  .shipping-form .label-postal { visibility: hidden; position: relative; display:block; }
+  .shipping-form .label-postal::after { content: "CP"; position:absolute; left:0; top:0; visibility:visible; font-weight:600; }
+}
+

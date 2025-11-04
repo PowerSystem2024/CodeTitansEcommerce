@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import React from "react";
 import { useCartLogic } from "./hooks/useCartLogic";
 import { HomePage } from "./pages/HomePage";
@@ -19,6 +19,22 @@ import ProfileAddress from "./components/profileComponents/ProfileAddress";
 import { CheckoutPage } from "./pages/CheckoutPage";
 import AdminOrders from "./components/admincomponents/AdminOrders";
 
+
+function FloatingCartWrapper(props) {
+  const location = useLocation();
+  const path = location.pathname || '';
+  const hide = path.startsWith('/profile') || path.startsWith('/admin') || path === '/checkout';
+
+  // Si la ruta oculta el carrito y está abierto, ciérralo para evitar estados "pegados"
+  React.useEffect(() => {
+    if (hide && props.isOpen && typeof props.onClose === 'function') {
+      props.onClose();
+    }
+  }, [hide, props.isOpen, props.onClose]);
+
+  if (hide) return null;
+  return <FloatingCart {...props} />;
+}
 
 function App() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -142,12 +158,12 @@ function App() {
         />} />
       </Routes>
   <ModalContainer type={modalType} visible={modalVisible} onClose={closeModal} onSwitch={switchModal} onSuccess={handleSuccess} />
-      <FloatingCart 
+      <FloatingCartWrapper
         items={items}
         itemCount={itemCount}
         isOpen={isCartOpen}
         onOpenCart={openCart}
-        onCloseCart={closeCart}
+        onClose={closeCart}
         onUpdateQuantity={updateQuantity}
         onRemoveItem={removeItem}
         onClearCart={clearCart}
