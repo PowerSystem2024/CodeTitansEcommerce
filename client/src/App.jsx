@@ -27,10 +27,10 @@ function FloatingCartWrapper(props) {
 
   // Si la ruta oculta el carrito y está abierto, ciérralo para evitar estados "pegados"
   React.useEffect(() => {
-    if (hide && props.isOpen && typeof props.onClose === 'function') {
-      props.onClose();
+    if (hide && props.isOpen && typeof props.onCloseCart === 'function') {
+      props.onCloseCart();
     }
-  }, [hide, props.isOpen, props.onClose]);
+  }, [hide, props.isOpen, props.onCloseCart]);
 
   if (hide) return null;
   return <FloatingCart {...props} />;
@@ -163,7 +163,7 @@ function App() {
         itemCount={itemCount}
         isOpen={isCartOpen}
         onOpenCart={openCart}
-        onClose={closeCart}
+        onCloseCart={closeCart}        // <- cambio aquí
         onUpdateQuantity={updateQuantity}
         onRemoveItem={removeItem}
         onClearCart={clearCart}
