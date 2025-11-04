@@ -20,20 +20,20 @@ import { CheckoutPage } from "./pages/CheckoutPage";
 import AdminOrders from "./components/admincomponents/AdminOrders";
 
 
-function FloatingCartWrapper(props) {
+function FloatingCartWrapper({ isOpen, onCloseCart, ...rest }) {
   const location = useLocation();
   const path = location.pathname || '';
   const hide = path.startsWith('/profile') || path.startsWith('/admin') || path === '/checkout';
 
-  // Si la ruta oculta el carrito y está abierto, ciérralo para evitar estados "pegados"
+  // cerrar carrito si la ruta lo oculta y está abierto
   React.useEffect(() => {
-    if (hide && props.isOpen && typeof props.onCloseCart === 'function') {
-      props.onCloseCart();
+    if (hide && isOpen && typeof onCloseCart === 'function') {
+      onCloseCart();
     }
-  }, [hide, props.isOpen, props.onCloseCart]);
+  }, [hide, isOpen, onCloseCart]);
 
   if (hide) return null;
-  return <FloatingCart {...props} />;
+  return <FloatingCart isOpen={isOpen} onCloseCart={onCloseCart} {...rest} />;
 }
 
 function App() {
