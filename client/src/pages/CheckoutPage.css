@@ -8,7 +8,7 @@
 .checkout-header-wrapper .shop-button,
 .checkout-header-wrapper .user-icons .shop-button,
 .checkout-header-wrapper .user-icons button[aria-label="Cerrar sesión"] {
-  display: none !important; /* ocultar Shop y Cerrar sesión en esta página */
+  display: none !important;
 }
 
 .checkout-content {
@@ -29,13 +29,41 @@
 .shipping-form .form-row { margin-bottom: 14px; }
 .shipping-form .form-row.two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .shipping-form .form-row.three { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-.shipping-form label { display: block; font-weight: 600; margin-bottom: 6px; }
-.shipping-form input, .shipping-form select {
+
+/* Labels - BLANCO y NEGRO */
+.shipping-form label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #000000 !important;
+  background: #ffffff !important;
+}
+
+/* Inputs y Selects - BLANCO y NEGRO */
+.shipping-form input,
+.shipping-form select {
   width: 100%;
-  border: 1px solid #ddd;
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #ddd !important;
   border-radius: 8px;
   padding: 10px 12px;
   font-size: 14px;
+  box-shadow: none !important;
+}
+
+/* Placeholders - gris oscuro para visibilidad */
+.shipping-form input::placeholder {
+  color: #555555 !important;
+  opacity: 1;
+}
+
+/* Focus state */
+.shipping-form input:focus,
+.shipping-form select:focus {
+  outline: none !important;
+  border: 2px solid #3b2518 !important;
+  box-shadow: none !important;
 }
 
 .submit-btn {
@@ -74,16 +102,16 @@
 .order-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .order-item img { width: 56px; height: 56px; object-fit: cover; border-radius: 8px; }
 .order-item .order-item-left { display: flex; align-items: center; gap: 10px; }
-.order-item .name { font-weight: 600; }
+.order-item .name { font-weight: 600; color: #000000; }
 .order-item .unit-price { color: #666; font-size: 13px; }
 .order-item .order-item-right { display: flex; align-items: center; gap: 8px; }
-.order-item .qty { background: #f1f1f1; border-radius: 6px; padding: 2px 8px; }
-.order-item .subtotal { font-weight: 600; }
+.order-item .qty { background: #f1f1f1; border-radius: 6px; padding: 2px 8px; color: #000000; }
+.order-item .subtotal { font-weight: 600; color: #000000; }
 .order-item .remove { background: transparent; border: none; cursor: pointer; font-size: 16px; }
 
 .order-summary { margin-top: 14px; border-top: 1px solid #eee; padding-top: 12px; display: flex; flex-direction: column; gap: 10px; }
-.order-summary .row { display: flex; justify-content: space-between; }
-.order-summary .row.total { font-size: 18px; }
+.order-summary .row { display: flex; justify-content: space-between; color: #000000; }
+.order-summary .row.total { font-size: 18px; color: #000000; }
 
 .pay-btn {
   margin-top: 12px;
@@ -97,21 +125,22 @@
 }
 
 .checkout-content {
-    color: black;
+  color: #000000;
 }
 
 .order-item {
-  border: 1px solid var(--border);
+  border: 1px solid #ddd;
   border-radius: 8px;
   padding: 12px;
   margin-bottom: 10px;
-  background: var(--card-bg);
+  background: #ffffff;
+  color: #000000;
 }
 
 .order-item > div {
   margin-bottom: 4px;
   font-size: 14px;
-  color: var(--text);
+  color: #000000;
 }
 
 .order-item > div:last-child {
@@ -120,6 +149,7 @@
 
 .order-item strong {
   font-weight: 600;
+  color: #000000;
 }
 
 @media (max-width: 768px) {
@@ -146,7 +176,6 @@
 }
 
 @media (max-width: 375px) {
-  /* reemplaza "Código postal" por "CP" */
   .shipping-form .form-row.three > div:first-child > label {
     position: relative;
     display: block;
@@ -154,7 +183,6 @@
     line-height: 0.75;
     margin: 0 0 6px 0;
     padding: 0;
-    /* oculta el texto original sin romper el flujo */
     visibility: hidden;
   }
 
@@ -166,13 +194,13 @@
     visibility: visible;
     display: inline-block;
     font-weight: 600;
-    color: inherit;
+    color: #000000;
     background: transparent;
     padding: 0;
     line-height: 1.2;
   }
 
-  .shipping-form .label-postal { visibility: hidden; position: relative; display:block; }
-  .shipping-form .label-postal::after { content: "CP"; position:absolute; left:0; top:0; visibility:visible; font-weight:600; }
+  .shipping-form .label-postal { visibility: hidden; position: relative; display: block; }
+  .shipping-form .label-postal::after { content: "CP"; position: absolute; left: 0; top: 0; visibility: visible; font-weight: 600; color: #000000; }
 }
 
