@@ -1,6 +1,6 @@
 import React from 'react';
 import './ProductBanner.css';
-import bannerImage from '../../assets/img/coffeebanner.png';
+import bannerImage from '../../assets/img/CoffeeBeans.jpeg';
 
 
 export const ProductBanner = () => {
