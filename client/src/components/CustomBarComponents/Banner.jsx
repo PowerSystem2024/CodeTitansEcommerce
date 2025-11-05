@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Banner.css';
+import { useNavigate } from 'react-router-dom';
 
 // --- Importa tus imágenes y logo aquí ---
 // Asegúrate de que las rutas sean correctas
@@ -9,6 +10,7 @@ import logoSvg from '../../assets/img/Group.svg'; // El logo en formato SVG
 
 export const Banner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const navigate = useNavigate();
   
   // Array de objetos para definir cada slide
   const slides = [
@@ -19,7 +21,7 @@ export const Banner = () => {
       content: {
         logo: logoSvg,
         text: "Descubre el sabor único de nuestro café artesanal, preparado con los granos más selectos para tu paladar.",
-        buttonText: "COMPRAR"
+        buttonText: "COMPRAR",
       }
     },
     { 
@@ -77,7 +79,12 @@ export const Banner = () => {
           <div className="slide-content">
             <img src={slides[currentSlide].content.logo} alt="Logo Catfecito" className="logo" />
             <p className="text">{slides[currentSlide].content.text}</p>
-            <button className="buy-button">{slides[currentSlide].content.buttonText}</button>
+            <button
+              className="buy-button"
+              onClick={() => navigate('/products')}
+            >
+              {slides[currentSlide].content.buttonText}
+            </button>
           </div>
         )}
         

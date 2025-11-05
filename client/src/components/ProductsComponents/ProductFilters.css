@@ -123,10 +123,14 @@
 
 .price-filter input[type="number"] {
   width: 100px;
-  padding: 6px 8px;
-  border-radius: 999px;
-  border: 1px solid rgba(0,0,0,0.06);
-  font-size: 11px;
+  padding: 8px 12px;
+  border-radius: 30px; /* match search-rec pill */
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 6px 18px -12px rgba(190, 181, 181, 0.4);
+  background-color: #ffffff; /* same as search-rec */
+  color: #4A2D1A; /* same text color as search */
+  font-size: 12px;
+  font-weight: bolder;
   font-family: 'Poppins', sans-serif;
 }
 
@@ -166,7 +170,7 @@
   right: 0; 
   top: 8px; 
   height: 4px;
-  background: rgba(0,0,0,0.06); 
+  background: rgba(248, 248, 248, 0.06); 
   border-radius: 999px;
 }
 
