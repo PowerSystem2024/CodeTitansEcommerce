@@ -81,6 +81,14 @@
   cursor: not-allowed;
 }
 
+.submit-btn[style*="display: none"] {
+  display: none !important;
+}
+
+.submit-btn.hidden {
+  display: none !important;
+}
+
 .form-error {
   background: #ffebee;
   color: #c62828;
@@ -138,7 +146,7 @@
 }
 
 .order-item > div {
-  margin-bottom: 4px;
+  
   font-size: 14px;
   color: #000000;
 }

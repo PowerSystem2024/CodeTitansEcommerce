@@ -297,8 +297,12 @@ export const CheckoutPage = ({
 
             {error && <div className="form-error">{error}</div>}
 
-            <button type="submit" className="submit-btn" disabled={isCreatingOrder || preferenceId || isLoadingAddress}>
-              {isLoadingAddress ? 'Cargando...' : isCreatingOrder ? 'Procesando...' : preferenceId ? 'Orden creada ✓' : 'Continuar al pago'}
+            <button 
+              type="submit" 
+              className={`submit-btn ${preferenceId ? 'hidden' : ''}`}
+              disabled={isCreatingOrder || preferenceId || isLoadingAddress}
+            >
+              {isLoadingAddress ? 'Cargando...' : isCreatingOrder ? 'Procesando...' : 'Continuar al pago'}
             </button>
           </form>
         </section>
