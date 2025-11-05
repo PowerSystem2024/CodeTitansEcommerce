@@ -62,7 +62,7 @@ export const NavBar = () => {
           <button onClick={handleShowConstruction} className="button">Cápsulas</button>
           <button onClick={handleShowConstruction} className="button">Cafeteras y accesorios</button>
           <button onClick={handleShowConstruction} className="button">Ofertas</button>
-          <button href="#" className="button">Contacto</button>
+          <button onClick={() => navigate('/contact')} className="button">Contacto</button>
         </div>
 
         {/* Hamburger for mobile */}
@@ -87,7 +87,7 @@ export const NavBar = () => {
           <button onClick={() => { setMenuOpen(false); handleShowConstruction(); }} className="mobile-button">Cápsulas</button>
           <button onClick={() => { setMenuOpen(false); handleShowConstruction(); }} className="mobile-button">Cafeteras y accesorios</button>
           <button onClick={() => { setMenuOpen(false); handleShowConstruction(); }} className="mobile-button">Ofertas</button>
-          <button onClick={() => setMenuOpen(false)} className="mobile-button">Contacto</button>
+          <button onClick={() => { setMenuOpen(false); navigate('/contact'); }} className="mobile-button">Contacto</button>
         </div>
       </nav>
 

@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 import React from "react";
 import { useCartLogic } from "./hooks/useCartLogic";
 import { HomePage } from "./pages/HomePage";
+import ContactPage from "./pages/ContactPage";
 import { Products } from "./pages/Products";
 import { FloatingCart } from "./components/cartComponents/FloatingCart";
 import { Login } from "./pages/Login";
@@ -114,6 +115,16 @@ function App() {
 
       <Routes>
         <Route path= "/" element={<HomePage 
+          cartItems={items}
+          itemCount={itemCount}
+          isCartOpen={isCartOpen}
+          onRemoveItem={removeItem}
+          onUpdateQuantity={updateQuantity}
+          onOpenCart={openCart}
+          onCloseCart={closeCart}
+          onOpenAuthModal={openModal}
+        />} />
+        <Route path="/contact" element={<ContactPage
           cartItems={items}
           itemCount={itemCount}
           isCartOpen={isCartOpen}
