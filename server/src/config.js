@@ -6,6 +6,7 @@ dotenv.config();
 const config = {
   // Servidor
   PORT: process.env.PORT || 5000,
+  HOST: process.env.HOST || "0.0.0.0",
   NODE_ENV: process.env.NODE_ENV || "development",
 
   // Base de datos
@@ -20,7 +21,7 @@ const config = {
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || "7d",
 
   // CORS
-  CLIENT_URL: process.env.CLIENT_URL || "http://localhost:3000",
+  CLIENT_URL: process.env.CLIENT_URL || "http://localhost:5173",
 
   // Bcrypt
   BCRYPT_ROUNDS: parseInt(process.env.BCRYPT_ROUNDS) || 10,
@@ -38,6 +39,7 @@ export default config;
 
 export const {
   PORT,
+  HOST,
   NODE_ENV,
   DB_HOST,
   DB_PORT,
