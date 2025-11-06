@@ -20,7 +20,7 @@ const config = {
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || "7d",
 
   // CORS
-  CLIENT_URL: process.env.CLIENT_URL || "http://localhost:3000",
+  CLIENT_URL: process.env.CLIENT_URL || "http://localhost:5173",
 
   // Bcrypt
   BCRYPT_ROUNDS: parseInt(process.env.BCRYPT_ROUNDS) || 10,
