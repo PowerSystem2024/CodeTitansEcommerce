@@ -3,6 +3,7 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 import morgan from "morgan";
+import config from "./config.js";
 import authRoutes from "./router/auth.routes.js";
 import userRoutes from "./router/user.routes.js";
 import categoryRoutes from "./router/category.routes.js";
@@ -16,7 +17,35 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-app.use(cors());
+// Configurar CORS para producción y desarrollo
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Permitir requests sin origin (Postman, mobile apps, etc.)
+    if (!origin) return callback(null, true);
+
+    // Lista de orígenes permitidos
+    const allowedOrigins = [
+      config.CLIENT_URL,
+      "http://localhost:3000",
+      "http://localhost:5173",
+      // Agregar aquí URLs adicionales si es necesario
+    ].filter(Boolean); // Eliminar valores undefined/null
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      // En desarrollo, permitir todos los orígenes
+      if (config.NODE_ENV === "development") {
+        callback(null, true);
+      } else {
+        callback(new Error("No permitido por CORS"));
+      }
+    }
+  },
+  credentials: false, // No usamos cookies, así que false
+};
+
+app.use(cors(corsOptions));
 
 app.use(morgan("dev"));
 
