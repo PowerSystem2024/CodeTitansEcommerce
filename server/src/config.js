@@ -6,6 +6,7 @@ dotenv.config();
 const config = {
   // Servidor
   PORT: process.env.PORT || 5000,
+  HOST: process.env.HOST || "0.0.0.0",
   NODE_ENV: process.env.NODE_ENV || "development",
 
   // Base de datos
@@ -38,6 +39,7 @@ export default config;
 
 export const {
   PORT,
+  HOST,
   NODE_ENV,
   DB_HOST,
   DB_PORT,
