@@ -5,9 +5,6 @@ import cron from "node-cron";
 import { cancelUnpaidOrders } from "./jobs/cancelUnpaidOrders.js";
 import { PORT, HOST, NODE_ENV } from "./config.js";
 
-// const PORT = process.env.PORT || 5000;
-// const HOST = process.env.HOST || "0.0.0.0"; // Escuchar en todas las interfaces (necesario para Railway)
-
 async function startServer() {
   try {
     await testDB();
