@@ -5,6 +5,7 @@ import cron from "node-cron";
 import { cancelUnpaidOrders } from "./jobs/cancelUnpaidOrders.js";
 
 const PORT = process.env.PORT || 5000;
+const HOST = process.env.HOST || "0.0.0.0"; // Escuchar en todas las interfaces (necesario para Railway)
 
 async function startServer() {
   try {
@@ -13,18 +14,21 @@ async function startServer() {
     app.listen(PORT, () => {
       console.log("🚀 Servidor iniciado correctamente");
       console.log(`📡 Puerto: ${PORT}`);
+      console.log(`🌐 Host: ${HOST}`);
       console.log(`🔗 URL Local: http://localhost:${PORT}`);
       console.log(`🌍 Entorno: ${process.env.NODE_ENV || "development"}`);
       console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
       console.log("🐱 ¡Catfecito Backend está funcionando! ☕");
-      
+
       // Cron job: Cancelar órdenes no pagadas cada 5 minutos
-      cron.schedule('*/5 * * * *', () => {
+      cron.schedule("*/5 * * * *", () => {
         console.log("⏰ Ejecutando job: Cancelar órdenes no pagadas...");
         cancelUnpaidOrders();
       });
-      
-      console.log("⏰ Cron job iniciado: Cancelación de órdenes no pagadas cada 5 minutos");
+
+      console.log(
+        "⏰ Cron job iniciado: Cancelación de órdenes no pagadas cada 5 minutos"
+      );
     });
   } catch (error) {
     console.error("Error al iniciar el servidor", error);
