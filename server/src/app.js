@@ -11,6 +11,7 @@ import productRoutes from "./router/product.routes.js";
 import cartRoutes from "./router/cart.routes.js";
 import orderRoutes from "./router/order.routes.js";
 import paymentRoutes from "./router/payment.routes.js";
+import { pool } from "./db.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -56,6 +57,12 @@ app.use(express.urlencoded({ extended: false }));
 app.get("/", (req, res) =>
   res.json({ message: "Bienvenidos a la API de Catfecito" })
 );
+
+// Verificar conexión a la base de datos con la configuracion actual
+app.get("/api/ping", async (req, res) => {
+  const result = await pool.query("SELECT NOW() as now");
+  res.json({ message: "pong", time: result.rows[0].now });
+});
 
 // Archivos estáticos (imágenes)
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
