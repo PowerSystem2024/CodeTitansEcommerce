@@ -12,7 +12,8 @@
     "build": "vite build",
     "start": "vite preview --host 0.0.0.0",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "serve": "serve dist -p $PORT"
   },
   "dependencies": {
     "animate.css": "^4.1.1",
